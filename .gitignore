@@ -1,0 +1,22 @@
+# ---- 靶场做题残留物：webshell / payload / 会话，禁止入库 ----
+/ctf-lab/shell.php
+/ctf-lab/shell.gif
+/ctf-lab/horse8.php.jpg
+/ctf-lab/double.pphphp
+/ctf-lab/m.gif
+/ctf-lab/h.php.jpg
+/ctf-lab/d.pphphp
+/ctf-lab/cmd.txt
+/ctf-lab/jar.txt
+/ctf-lab/input.php
+
+# ---- 大体积二进制工具（可重新下载，不入库） ----
+/tools/burp-mcp-all.jar
+
+# ---- Python 运行垃圾 ----
+__pycache__/
+**/tempCodeRunnerFile.py
+
+# ---- 系统垃圾 ----
+Thumbs.db
+Desktop.ini

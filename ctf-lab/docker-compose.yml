@@ -1,0 +1,51 @@
+name: ctf-lab-course
+services:
+  http-basics:
+    build: ./modules/http-basics
+    container_name: ctf-http-basics
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+  cmd-injection:
+    build: ./modules/cmd-injection
+    container_name: ctf-cmd-injection
+    ports:
+      - "8082:80"
+    restart: unless-stopped
+  sql-injection:
+    build: ./modules/sql-injection
+    container_name: ctf-sql-injection
+    depends_on:
+      - sql-injection-db
+    ports:
+      - "8083:80"
+    restart: unless-stopped
+  sql-injection-db:
+    image: mysql:5.7
+    container_name: ctf-sql-injection-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ctf
+      MYSQL_USER: ctf
+      MYSQL_PASSWORD: ctfpass
+    volumes:
+      - ./modules/sql-injection/db:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+  xss:
+    build: ./modules/xss
+    container_name: ctf-xss
+    ports:
+      - "8084:80"
+    restart: unless-stopped
+  upload-lfi:
+    build: ./modules/upload-lfi
+    container_name: ctf-upload-lfi
+    ports:
+      - "8085:80"
+    restart: unless-stopped
+  upload-lfi-adv:
+    build: ./modules/upload-lfi-adv
+    container_name: ctf-upload-lfi-adv
+    ports:
+      - "8086:80"
+    restart: unless-stopped

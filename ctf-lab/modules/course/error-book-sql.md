@@ -1,0 +1,11 @@
+# 📕 SQL 错题本
+
+## 2026-08-18 · si4 复习（间隔复测第 1 天）
+
+- **卡点/偏差**：同一段 payload 连续三次拼写/语法错误，全部是粗心：
+  1. `infromation_schema`（应为 information_schema，i-n-f-o-r）
+  2. `wehere`（应为 where）+ `table_schema-database`（`-` 是减号，应为 `=`；database 缺括号 `database()`）
+  3. `sectet_table`（应为 secret_table，s-e-c-r-e-t）
+- **根因**：手打已知值，不核对源码/提示/上一步查询结果。
+- **规矩（必须执行）**：表名/列名等已知值**复制**，不手打；提交前逐词自检三样——拼写、符号（= 不是 -）、括号（函数要 ()）。
+- **状态**：✅ 2026-08-24 已补完（flag{si4_comment}）。自查一条：这次的表名/列名，是复制的还是手打的？
