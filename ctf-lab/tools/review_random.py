@@ -1,9 +1,10 @@
-# 复习抽题器：随机抽题闭卷复测（间隔重复，防遗忘）
-# 用法：python review_random.py
-#
-# 题池维护规则（2026-08-24 重整）：
-#   - 只收录【确认已完成】的题（以 modules/course/progress.md 打勾为准）
-#   - 做完新题后手动把它从下方 pending 移进 pool
+# 复习抽题器 v2：洗牌袋模式（2026-09-08 学员提案采纳）
+# v1 纯随机的缺陷：随机抽有"饥饿问题"——题池 50 题、每天抽 2，个别题可能长期抽不到
+# v2 洗牌袋：整池洗牌排成队列，每次从队头取；不够取就补洗剩余题——
+#    数学保证：每一轮（25 天）里，每道题恰好被抽到一次，顺序仍然随机
+# 用法：python review_random.py [数量]
+import json
+import os
 import random
 import sys
 
@@ -65,15 +66,43 @@ pool = [
   ("L14 毕业考复测", "http://127.0.0.1:8099/", "手搓 POP+wakeup 绕过+base64"),
 ]
 
-# ---------- 待定区（没做完/状态不明，禁止抽！做完再移入上方 pool） ----------
-# fi8 三合一  http://localhost:8086/fi8/  2026-08-25 跟打通过，8-28 闭卷重考转正后入池
+# ---------- 洗牌袋状态：队列存题名，持久化在同目录 json ----------
+QUEUE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "review_queue.json")
+
+def load_queue():
+    """读队列；池变动后自动剔除已不存在的题名，坏文件当作空袋重来"""
+    try:
+        with open(QUEUE_FILE, encoding="utf-8") as f:
+            names = json.load(f)
+    except Exception:
+        names = []
+    pool_names = {p[0] for p in pool}
+    return [n for n in names if n in pool_names]
+
+def save_queue(names):
+    with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+        json.dump(names, f, ensure_ascii=False, indent=1)
 
 count = int(sys.argv[1]) if len(sys.argv) > 1 else 2
-picks = random.sample(pool, k=min(count, len(pool)))
+queue = load_queue()
+
+# 队头不够抽 -> 把"不在队里的剩余题"洗乱接到队尾（保证：一轮之内每题恰好一次，无重复）
+if len(queue) < count:
+    in_queue = set(queue)
+    rest = [p[0] for p in pool if p[0] not in in_queue]
+    random.shuffle(rest)
+    queue.extend(rest)
+
+by_name = {p[0]: p for p in pool}
+picks = [by_name[queue.pop(0)] for _ in range(min(count, len(pool)))]
+save_queue(queue)
+
 print(f"今天闭卷复测这 {len(picks)} 题（15 分钟内完成）：")
 for name, url, tag in picks:
     print(f"  - {name}")
     print(f"    {url}")
+print()
+print(f"（洗牌袋还剩 {len(queue)} 题，取空自动重洗整池——每题每轮必被抽到，v1 的饥饿问题已修）")
 print()
 print("—— 做完再看下面 ——")
 for name, url, tag in picks:
