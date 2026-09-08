@@ -18,5 +18,7 @@ class H(BaseHTTPRequestHandler):
         pass
 
 if __name__ == '__main__':
-    print('收货器监听 0.0.0.0:9999 ...（Ctrl+C 停）', flush=True)
-    HTTPServer(('0.0.0.0', 9999), H).serve_forever()
+    # 2026-09-08 修正：默认只监听本机（原 0.0.0.0 会暴露在局域网）。
+    # 容器回连宿主机的场景（host.docker.internal）仍可用 127.0.0.1 收到。
+    print('收货器监听 127.0.0.1:9999 ...（Ctrl+C 停）', flush=True)
+    HTTPServer(('127.0.0.1', 9999), H).serve_forever()

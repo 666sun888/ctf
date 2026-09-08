@@ -9,7 +9,10 @@ cd ctf-lab
 docker compose up -d --build
 ```
 
-访问 http://localhost:8080/ 查看 HTTP 基础模块题目列表。停止：`docker compose down`。
+访问 http://localhost:8001/ 查看 HTTP 基础模块题目列表。停止：`docker compose down`。
+
+> 端口说明（2026-09-08 修正）：http-basics 由 8080 改为 **8001**——8080 与本机 Burp Suite 冲突。
+> 抽题器 `tools/review_random.py` 里 ch1~ch4 用的也是 8001，两边现已一致。
 
 端口全部只绑定 127.0.0.1（仅本机可访问）。复测前重置靶场状态（清空容器内的上传文件/留言/权限改动）：`docker compose up -d --force-recreate`。
 
@@ -17,7 +20,7 @@ docker compose up -d --build
 
 | 端口 | 模块 | 状态 |
 |------|------|------|
-| 8080 | http-basics（HTTP 基础） | ✅ 已上线 |
+| 8001 | http-basics（HTTP 基础） | ✅ 已上线 |
 | 8082 | cmd-injection（命令注入） | ✅ 已上线 |
 | 8083 | sql-injection（SQL 注入，15 题） | ✅ 已上线 |
 | 8084 | xss（XSS，7 题） | ✅ 已上线 |

