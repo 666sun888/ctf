@@ -3,7 +3,7 @@ $DB = 'ctf2b';
 require_once __DIR__ . '/../config.php';
 // ============================================
 // 考点：UNION 变种——关键字过滤 + order by 探列数
-// 讲义：lesson-03 第 5、7 节
+// 速查：course/SQL注入速查.md 第 1 节（UNION）+ 第 7 节（绕过速查）
 // 提示：union/select 被拦了……MySQL 不区分关键字大小写，还记得吗？
 // ============================================
 $rows = [];
@@ -11,7 +11,7 @@ $error = '';
 $blocked = '';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    if (preg_match('/union|select/', $id)) { // 注意：这个正则忘了 /i，大小写不敏感地拦——不，它只拦小写！
+    if (preg_match('/union|select/', $id)) { // 注意：这个正则忘了加 /i——只拦全小写的 union/select
         $blocked = "❌ 拦截：不允许 union/select";
     } else {
         $sql = "SELECT name, price FROM products WHERE id=" . $id;

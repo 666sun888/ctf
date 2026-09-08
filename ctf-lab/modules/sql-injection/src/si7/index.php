@@ -3,7 +3,7 @@ $DB = 'ctf7';
 require_once __DIR__ . '/../config.php';
 // ============================================
 // 考点：堆叠注入（Stacked Injection，mysqli_multi_query）
-// 讲义：lesson-03b 第 3 节
+// 速查：course/SQL注入速查.md 第 5 节（堆叠注入）
 // 提示：union 被拦了，但分号没有被拦——show tables 会告诉你一切
 // ============================================
 $rows = [];

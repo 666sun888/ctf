@@ -9,6 +9,7 @@
 /ctf-lab/cmd.txt
 /ctf-lab/jar.txt
 /ctf-lab/input.php
+/ctf-lab/t_shell.php
 
 # ---- 大体积二进制工具（可重新下载，不入库） ----
 /tools/burp-mcp-all.jar
@@ -20,3 +21,42 @@ __pycache__/
 # ---- 系统垃圾 ----
 Thumbs.db
 Desktop.ini
+/ctf-lab/.htaccess
+
+# ========================================================
+# 以下为 2026-09-08 仓库加固新增（全量扫描后发现）
+# ========================================================
+
+# ---- 可重放的攻击载荷与会话凭据（严禁入库） ----
+/cookie_sleep.txt
+/dnslog.txt
+/pycookies.txt
+/dom.txt
+/ctf-lab/lab-scaffold/shiro-battle/cookie.txt
+/ctf-lab/lab-scaffold/shiro-battle/dnslog.jar.txt
+/ctf-lab/lab-scaffold/shiro-battle/payload_url.txt
+/ctf-lab/lab-scaffold/shiro-battle/payload3_url.txt
+/ctf-lab/lab-scaffold/shiro-battle/*.ser
+
+# ---- 本机路径 / 样本信息 / 外带日志残留 ----
+/analyze_pe2.py
+/oob4.txt
+/ctf-lablab-scaffoldresolve_shortcircuit.sql
+
+# ---- 扫描导出产物（本机工具产物，不必入库） ----
+/_scan_zcode/
+
+# ---- 第三方工具与运行时（体积大、可从上游重现） ----
+/vulhub/
+/php709/
+/phpggc/
+/ysoserial-net/
+/ysoserial-all.jar
+/ctf-lab/lab-scaffold/monolog-1.27.1/
+/ctf-lab/lab-scaffold/log-1.1.4/
+/ctf-lab/lab-scaffold/l10-phpggc/vendor/
+/ctf-lab/lab-scaffold/shiro-battle/easyjava-src/
+/ctf-lab/lab-scaffold/shiro-battle/*.class
+/ctf-lab/lab-scaffold/*.tar.gz
+/ctf-lab/lab-scaffold/l12-java/*.class
+/ctf-lab/lab-scaffold/l13-dotnet/*.exe

@@ -1,0 +1,1 @@
+flag{wakeup_bypass_l6}

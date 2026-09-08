@@ -1,6 +1,6 @@
 # 模块：cmd-injection（命令注入）
 
-对应讲义：`course/lesson-02-命令注入.md`
+对应速查：`course/命令注入速查.md`
 端口：8082
 
 ## 题目列表

@@ -1,0 +1,1 @@
+flag{phar_dark_door_l8}

@@ -1,6 +1,6 @@
 # 模块：xss（跨站脚本）
 
-对应讲义：`course/lesson-04-XSS.md`
+对应速查：`course/XSS速查.md`
 端口：8084
 
 ## 题目列表
@@ -14,6 +14,6 @@
 
 ## 做题前必读
 
-- 讲义 lesson-04 第 2、3 节（原理 + 三类型）
-- 第 6 节（绕过 payload 库）
+- 速查第 2 节（三类型）+ 第 3 节（偷 Cookie）
+- 第 1 节（基础 payload）+ 第 4 节（过滤绕过速查）
 - xs4 需要浏览器测试（curl 不执行 JS）：用浏览器打开页面 → F12 看 Cookie → 观察 /xss/stolen.txt

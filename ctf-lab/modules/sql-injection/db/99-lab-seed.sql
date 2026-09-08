@@ -1,0 +1,14 @@
+USE ctf;
+DROP TABLE IF EXISTS lab_users;
+CREATE TABLE lab_users(id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(64), password VARCHAR(64), role VARCHAR(16));
+INSERT INTO lab_users(username,password,role) VALUES('admin','admin888','admin'),('guest','guest123','guest');
+DROP TABLE IF EXISTS lab_goods;
+CREATE TABLE lab_goods(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(64), price INT);
+INSERT INTO lab_goods(name,price) VALUES('apple',3),('banana',2),('cherry',9);
+DROP TABLE IF EXISTS lab_secret;
+CREATE TABLE lab_secret(id INT AUTO_INCREMENT PRIMARY KEY, data VARCHAR(255));
+INSERT INTO lab_secret(data) VALUES('flag{lab_secret_data}');
+DROP TABLE IF EXISTS lab_feedback;
+CREATE TABLE lab_feedback(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(64), msg VARCHAR(255));
+DROP TABLE IF EXISTS lab_visit;
+CREATE TABLE lab_visit(id INT AUTO_INCREMENT PRIMARY KEY, ua VARCHAR(255));

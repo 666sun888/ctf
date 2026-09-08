@@ -1,6 +1,6 @@
 # 模块：http-basics（HTTP 基础）
 
-对应讲义：`course/lesson-01-HTTP基础.md`
+对应速查：`course/Python与HTTP速查.md`（第 5~12 节 HTTP 部分）
 端口：8080
 
 ## 题目列表

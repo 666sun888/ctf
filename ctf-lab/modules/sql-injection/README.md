@@ -1,6 +1,6 @@
 # 模块：sql-injection（SQL 注入）
 
-对应讲义：`course/lesson-03-SQL注入.md`（含 6.1 长数据四件套）+ `course/lesson-03b-SQL注入进阶.md`
+对应速查：`course/SQL注入速查.md`（第 0 节总流程 + 各题型分节）
 难度阶梯：L1 基础（si1~10）→ L2 变种（si2b/3b/5b/7b）→ L3 综合（sifinal）
 端口：8083（PHP 页面）；数据库 mysql:5.7 为内部服务，不对外
 

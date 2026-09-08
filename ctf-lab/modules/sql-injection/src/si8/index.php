@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config.php';
 // ============================================
 // 考点：读文件 LOAD_FILE()
-// 讲义：lesson-03b 第 4 节
+// 速查：course/SQL注入速查.md 第 7 节（读文件 LOAD_FILE）
 // 提示：flag 在 MySQL 容器的 /var/lib/mysql-files/flag.txt；试试 load_file
 // ============================================
 $rows = [];

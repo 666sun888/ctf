@@ -1,0 +1,1 @@
+FLAG{local_include_channel_ok}

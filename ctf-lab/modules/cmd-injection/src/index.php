@@ -17,6 +17,6 @@ $challenges = [
   <li><a href="/<?= $dir ?>/"><?= htmlspecialchars($name) ?></a> —— 考点：<?= htmlspecialchars($tag) ?></li>
 <?php endforeach; ?>
 </ul>
-<p>做题前建议先读讲义 lesson-02 第 3 节（分隔符全家桶）和第 6 节（过滤绕过）。</p>
+<p>做题前建议先读速查 course/命令注入速查.md 第 1 节（分隔符全家桶）和第 3 节（绕过速查）。</p>
 </body>
 </html>

