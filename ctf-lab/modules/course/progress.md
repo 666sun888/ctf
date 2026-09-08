@@ -293,3 +293,17 @@
 - [x] si4 补完（2026-08-24 关账，flag 已拿到）
 - [ ] 第 5 课完成后：writeup 复盘 + 隔天复测（老规矩）
 - [ ] 第 5 课之后的下一板块（原规划 Phase 2-5）：CSRF
+
+## 🧹 仓库加固（2026-09-08，全量扫描后修复）
+
+> 触发：对 `D:\deepseek` 全工作区 + zcode 6 个会话（1,984 条消息）做全量扫描，查出 26 项差异/风险。本节记录其中"工程卫生"类的修复。
+
+- [x] **git 仓库首次真正入库**：此前唯一提交停在 8/25，3 周工作全部未提交，且 `ctf-lab/lab-scaffold/` **跟踪文件数 = 0**（整套自建靶场零版本保护）。本次提交 `0d0cd73` 将反序列化模块全套（速查表 / 5 本错题本 / l6~l14 十口靶场 / greatphp-test / shiro-battle 源码）、工作规矩、三年路线图、新坑清单、练武场落盘一并入库；跟踪文件数 126 → **253**，lab-scaffold 0 → **99**
+- [x] **`.gitignore` 加固**：新增排除可重放载荷与会话凭据（`cookie_sleep.txt`、`dnslog.txt`、`pycookies.txt`、`shiro-battle/{cookie.txt,payload_url*.txt,*.ser}`）、本机路径/样本残留（`analyze_pe2.py`、`oob4.txt`）、第三方大体积工具（vulhub/php709/phpggc/ysoserial-net 等）、扫描产物；补漏 `t_shell.php`
+- [x] **远端备份建立**：本机裸仓库 `D:\deepseek-git-backup.git`（0.8 MB），已推送全部分支与标签；打标签 `v0.1-2026-09-08-locked`。**GitHub 远端待学员本人授权后添加**（`gh` 未安装、无凭据）
+- [x] **端口矛盾修复**（扫描第 2 项）：`docker-compose.yml` 的 http-basics 映射 8080 → **8001**（8080 已被本机 Burp 占用，而实跑容器本就是 8001）；`ctf-lab/README.md` 访问地址与端口表同步。验证：`docker compose config` published=8001 与容器实际映射一致，抽题器 ch1~ch4 全通（ch1 GET 405 = 题设只许 POST）
+- [x] **敏感残留隔离**（扫描第 7/22 项）：根目录 6 个文件移入 `D:\deepseek-quarantine-20260908\`（含可重放的 Shiro rememberMe 载荷 `cookie_sleep.txt`、含会话 Cookie 的 `dnslog.txt`、错误文件名 `ctf-lablab-scaffoldresolve_shortcircuit.sql`）；`shiro_keycrack.py` 真实外部靶机 URL → 本地 8100；`Detect.java` 外部回调域名 → 127.0.0.1:9999；`exfil_recv.py` 监听 0.0.0.0 → 127.0.0.1
+- [x] **Shiro 靶场复活**：`cve-2016-4437-web-1` 重新拉起，8100 返回 302（登录页），旗 `flag{shiro_rememberme_vulhub}` 原位
+- [x] **环境体检**：18 口靶场端口全部 LISTENING（8001 / 8082~8086 / 8090~8099 / 9090 / 37300）
+- [ ] **待办（本次未做）**：账本 5 处"已完成未打勾"补勾；L12/L13 的 `webroot` 赃物清理或标注；`progress.md:239` 截断行与 229/233 重复段修复；日期错位（8/31 记成 9/1）订正；抽题器补 L7/L8/L11/L13 四题入池；`modules/xss/README.md` 与 `modules/sql-injection/README.md` 刷新
+- [ ] **待办（工程）**：`progress.md:165`"9090 常开"与 `start-labs.cmd` 不一致——9090 是独立进程，需补进启动脚本或改注；根目录 `analyze_pe2.py` 已不入库但仍在本机（含样本路径）
