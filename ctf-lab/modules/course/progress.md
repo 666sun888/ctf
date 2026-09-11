@@ -337,3 +337,12 @@
   Register-ScheduledTask -TaskName "DSH-CTF-Labs-Autostart" -Action $a -Trigger $t -Force
   ```
   注册后**注销重登验证一次**（规矩 10：变更后立即验证）
+
+- [x] **🎯 P1852 [NISACTF 2022]babyserialize · 通过 —— 首次「零教练马力」独立击杀（2026-09-11）**：旗 `NSSCTF{0b568812-0abb-47e4-af65-f961d3e49e0e}` 实锤（UUID 格式核验通过）
+  - **P1 进度 6/15 → 7/15**；本仗验收标准是"零教练马力"，全程未给任何提示，学员自行完成侦查→审计→倒推→造弹→取旗
+  - **教练侧独立验收**：本地复刻靶（`lab-scaffold/p1852-local/`）用学员的 exp 实弹复现，**六跳全中**：`TianXiWei::__wakeup → Ilovetxw::__call → four::__set → strtolower($this->a) → Ilovetxw::__toString → NISA::__invoke → eval`。学员的出口倒推（从 `@eval($this->txw4ever)` 起，逆推到起爆点）与源码逐跳吻合
+  - **学员自述的推理链（原文记录）**："由题可得 @eval 是我们要的出发点 → 要让这个触发就要先有对象被当作函数调用（return $bb()）→ 需要先有对象被当成字符串（strtolower($this->a)）→ 要触发就要 fun=sixsixsix 且有不可访问属性（four::__set）→ 需要不可访问的方法才能调用（$this->ext->nisa()）→ 刚好是开头（TianXiWei::__wakeup）" ——**这是一条完整的倒推链，符合 L4 方法论**
+  - **两个待答问题（复盘税，未答前本账记"通过、复盘待收"）**：① 侦查步缺失——学员自述"本可以先 ls，但这是我最后的 exp 就没搞 ls 版本"，那么 `/fllllllaaag` 这个文件名**是怎么知道的**？② 题目 `checkcheck($this->txw4ever)` 是 WAF 关卡，学员复述里**完全没提它**——WAF 拦了什么、弹药怎么过的，这一环没交代
+  - **教练侧附注**：学员贴的 exp 里 `NISA->fun` / `NISA->txw4ever` 未显式赋值（`fun` 的类默认值 `show_me_flag` 会走 wakeup 的 `hint()` 分支）——真 exp 必须显式写死这两个属性；这一格也是"为什么链必须从 TianXiWei 而不是 NISA 起爆"的答案
+  - **战果**：本仗为 P1 首个独立击杀，方法论三件套（疑问→`php -r` 实验 / L3 魔术方法地图 / L4 出口倒推）首次全自主应用
+  - **账本维护**：本地复刻靶入册 `lab-scaffold/p1852-local/`（含 `verify_student_chain.php` 全链验收脚本），可作后续同类题的演示靶
