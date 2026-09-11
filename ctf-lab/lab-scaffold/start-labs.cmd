@@ -1,6 +1,6 @@
 @echo off
 echo starting course lab servers (hidden background, no windows to close)...
-powershell -NoProfile -Command "Start-Process -FilePath 'D:\deepseek\php709\php.exe' -ArgumentList '-S','127.0.0.1:8090','-t','D:\deepseek\ctf-lab\lab-scaffold\l6-vault' -WindowStyle Hidden"
+powershell -NoProfile -Command "Start-Process -FilePath 'D:\deepseek\php709\php.exe' -ArgumentList '-S','127.0.0.1:8090','-t','D:\deepseek\ctf-lab\lab-scaffold\l6-vault\html' -WorkingDirectory 'D:\deepseek\ctf-lab\lab-scaffold\l6-vault\html' -WindowStyle Hidden"
 powershell -NoProfile -Command "Start-Process -FilePath 'D:\deepseek\php709\php.exe' -ArgumentList '-S','127.0.0.1:8091','-t','D:\deepseek\ctf-lab\lab-scaffold\l7-escape' -WindowStyle Hidden"
 powershell -NoProfile -Command "Start-Process -FilePath 'D:\deepseek\php709\php.exe' -ArgumentList '-S','127.0.0.1:8092','-t','D:\deepseek\ctf-lab\lab-scaffold\l8-phar' -WindowStyle Hidden"
 powershell -NoProfile -Command "Start-Process -FilePath 'D:\deepseek\php709\php.exe' -ArgumentList '-S','127.0.0.1:8093','-t','D:\deepseek\ctf-lab\lab-scaffold\l9-native' -WindowStyle Hidden"

@@ -315,3 +315,25 @@
 - [ ] **待办（工程）**：`progress.md:165`"9090 常开"与 `start-labs.cmd` 不一致——9090 是独立进程，需补进启动脚本或改注；根目录 `analyze_pe2.py` 已不入库但仍在本机（含样本路径）  - 9/9 视频档未开张：学员报备"不是很想看课"（连续两日做题/工具/视频全菜单低意愿，热身照常完成）→ 当日收工不追问；CS253 留清单首位待启用，"试毒三节"方案已给出（内容判卷不年份判卷）
 - [x] **P1852 [NISACTF 2022]babyserialize 发题（2026-09-09 午，验靶后发）**：学员午后主动请战（视频日反转）。API 靶况：1 分/1926 解/777 错/环境健康——低分高纹路（POP 链+弱比较+WAF 绕过+URL 污染五重考点），定位 = **独立击杀桥**：greatphp 是带教击杀中等档，此题验收标准 = 零教练马力出旗（方法论：疑问→php -r 实验/L3 魔术方法地图/L4 出口倒推）。45 分钟独立窗口规矩照旧
   - 9/9 午后学员临时有事，P1852 发而未战（环境未开，计时未启）——挂账顺延次日，流程：明晨热身 2 题 → P1852 独立击杀战直开
+
+## 🔧 2026-09-11（五）晨检 + 热身 + L6 靶场修洞
+
+- [x] **晨检事故：机器重启 → 自建靶场全灭（第二次同型事故）**：9/10 22:14 机器重启（运行 13.8h）→ **php 进程数 0、8090~8099 十口全灭**；Docker 侧因 `restart: unless-stopped` 自愈无恙
+  - 救场：`start-labs.cmd` 拉起 → 10/10 存活；Shiro 容器拉起 → 302
+  - **治本①（已完成）**：Shiro 容器原 `RestartPolicy: no`（难怪它躺了 47 小时）→ `docker update --restart unless-stopped`
+  - **治本②（未完成，需管理员）**：给自建靶场建开机自启计划任务被拒（拒绝访问）——待学员以**管理员身份**执行（命令见本文件末节）
+- [x] **晨间热身 2/2（2026-09-11）**：L6 + fi5 双旗实锤
+  - fi5 ✓：UA 投毒 → 包含日志；学员复述"伪造头里放恶意代码再包含利用"正确；用前已把日志**截断**成白板（不用 rm，避免幽灵 inode）
+  - **★ L6 靶场设计洞（学员发现，教练同责）**：旗文件**原来躺在 docroot 里**——`GET /flag_l6.txt` 直连就吐旗，**根本不用走反序列化**。学员判词："笑死，l6那个直接访问flag文件就获得了，那个反序列化的代码都不知道在哪里"——一句话暴露两个洞：①静态文件可直连取旗 ②**该课页面从不显示源码**（L8/L9/L14 都显示），所以学员找不到 `unserialize()`
+  - **修复（2026-09-11，三验全过）**：①旗移出 docroot（docroot 改为 `l6-vault/html/`，旗在 `l6-vault/flag_l6.txt`，payload 须写 `../flag_l6.txt`）②补 `highlight_file(__FILE__)` 源码透明 ③`start-labs.cmd` 的 8090 同步改 -t/-WorkingDirectory。验证：直连 `/flag_l6.txt` → **404** ✓；路径穿越 `/../flag_l6.txt` → **404** ✓；正路（属性数虚报 2 + target=`../flag_l6.txt`）→ **destruct 读到旗** ✓；对照（属性数 1）→ wakeup 消毒成 safe.txt、读不到 ✓
+  - **教练数错记档（L1 铁律再现）**：修靶时把 `../flag_l6.txt` 数成 **13** 字节（实为 **14**）→ `unserialize(): Error at offset 47 of 51` → 哑弹。**"让 PHP 自己 serialize"这条原则教练又一次没践行**
+  - **L6 成绩判定**：旗值虽被直连拿到，但**考点（wakeup 绕过）的攻防对抗未被验证** → 本日 flag 记"靶场洞回收"；**是否算通过，由学员在新靶上重打后定**（复测进入题池轮换）
+
+- [ ] **待办（需管理员，30 秒）**：给自建靶场建开机自启，根治"重启=靶场全灭"
+  ```
+  以管理员身份打开 PowerShell，粘贴运行：
+  $a = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c `"D:\deepseek\ctf-lab\lab-scaffold\start-labs.cmd`""
+  $t = New-ScheduledTaskTrigger -AtLogOn
+  Register-ScheduledTask -TaskName "DSH-CTF-Labs-Autostart" -Action $a -Trigger $t -Force
+  ```
+  注册后**注销重登验证一次**（规矩 10：变更后立即验证）

